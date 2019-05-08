@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import BookInfoScreen from "./book-info/BookInfo.js";
 
@@ -39,6 +40,10 @@ const AppNavigator = createStackNavigator(
   {
     initialRouteName: "Home",
     defaultNavigationOptions: {
+      headerBackTitle: null,
+      headerBackImage: (
+        <Icon name="arrow-left" style={{ paddingLeft: 20 }} size={30} light />
+      ),
       headerStyle: {
         backgroundColor: "#fff",
         borderBottomWidth: 0,
