@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 
 import LogoTitle from "./LogoTitle.js";
+import BookItem from "./BookItem.js";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
   }
 });
 
-class BookInfoScreen extends React.Component {
+class FeedScreen extends React.Component {
   static navigationOptions = {
     headerTitle: <LogoTitle />,
     headerRight: (
@@ -24,10 +25,10 @@ class BookInfoScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Book Info Screen</Text>
+        <BookItem />
       </View>
     );
   }
 }
 
-export default BookInfoScreen;
+export default FeedScreen;

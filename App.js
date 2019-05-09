@@ -4,6 +4,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import Icon from "react-native-vector-icons/Feather";
 
 import BookInfoScreen from "./views/BookInfo.js";
+import FeedScreen from "./views/Feed.js";
 
 const styles = StyleSheet.create({
   container: {
@@ -35,10 +36,13 @@ const AppNavigator = createStackNavigator(
     },
     BookInfo: {
       screen: BookInfoScreen
+    },
+    Feed: {
+      screen: FeedScreen
     }
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "Feed",
     defaultNavigationOptions: {
       headerBackTitleStyle: {
         color: "#000",
