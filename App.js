@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Feather";
 
-import BookInfoScreen from "./book-info/BookInfo.js";
+import BookInfoScreen from "./views/BookInfo.js";
 
 const styles = StyleSheet.create({
   container: {
@@ -40,9 +40,14 @@ const AppNavigator = createStackNavigator(
   {
     initialRouteName: "Home",
     defaultNavigationOptions: {
-      headerBackTitle: null,
+      headerBackTitleStyle: {
+        color: "#000",
+        paddingRight: 20,
+        fontSize: 18
+      },
+      headerBackTitle: "Back",
       headerBackImage: (
-        <Icon name="arrow-left" style={{ paddingLeft: 20 }} size={30} light />
+        <Icon name="chevron-left" size={30} style={{ paddingLeft: 20 }} />
       ),
       headerStyle: {
         backgroundColor: "#fff",

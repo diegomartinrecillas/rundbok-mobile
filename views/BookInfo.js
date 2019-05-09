@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Feather";
 
 const styles = StyleSheet.create({
   container: {
@@ -26,7 +26,7 @@ class BookInfoScreen extends React.Component {
   static navigationOptions = {
     headerTitle: <LogoTitle />,
     headerRight: (
-      <Icon name="share-alt" style={{ paddingRight: 20 }} size={30} light />
+      <Icon name="share-2" size={24} style={{ paddingRight: 20 }} light />
     )
   };
 
