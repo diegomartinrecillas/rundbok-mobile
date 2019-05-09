@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/Feather";
 
 import LogoTitle from "./LogoTitle.js";
 import BookItem from "./BookItem.js";
+import { ScrollView } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
   container: {
@@ -24,9 +25,15 @@ class FeedScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView>
         <BookItem />
-      </View>
+        <BookItem />
+        <BookItem />
+        <BookItem />
+        <BookItem />
+        <BookItem />
+        <BookItem />
+      </ScrollView>
     );
   }
 }
