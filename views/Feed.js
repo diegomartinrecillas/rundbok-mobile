@@ -27,7 +27,9 @@ class FeedScreen extends React.Component {
   render() {
     return (
       <ScrollView>
-        <BookGroup />
+        <BookGroup programme="architecture" />
+        <BookGroup programme="design" />
+        <BookGroup programme="computer science" />
       </ScrollView>
     );
   }
