@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Feather";
 
 import LogoTitle from "./LogoTitle.js";
-import BookItem from "./BookItem.js";
-import { ScrollView } from "react-native-gesture-handler";
+import BookItem from "./BookItem";
+import BookGroup from "./BookGroup";
 
 const styles = StyleSheet.create({
   container: {
@@ -26,13 +27,7 @@ class FeedScreen extends React.Component {
   render() {
     return (
       <ScrollView>
-        <BookItem />
-        <BookItem />
-        <BookItem />
-        <BookItem />
-        <BookItem />
-        <BookItem />
-        <BookItem />
+        <BookGroup />
       </ScrollView>
     );
   }

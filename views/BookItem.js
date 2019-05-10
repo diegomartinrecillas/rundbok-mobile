@@ -1,18 +1,29 @@
 import React from "react";
 import { StyleSheet, Text, Image, View } from "react-native";
-import fontStyles from "../styles/Font";
-import { marginBottom, marginTop } from "../styles/Margin";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
+    margin: 10
+  },
+  image: {
+    aspectRatio: 2 / 3,
+    marginBottom: 20,
     alignItems: "center",
     justifyContent: "center"
   },
-  image: {
-    width: 50,
-    aspectRatio: 1
+  price: {
+    color: "#32ab00",
+    fontWeight: "bold",
+    fontSize: 22
+  },
+  title: {
+    fontWeight: "bold",
+    color: "#181828",
+    fontSize: 20
+  },
+  text: {
+    textAlign: "left"
   }
 });
 
@@ -21,13 +32,13 @@ class BookItem extends React.Component {
     return (
       <View style={styles.container}>
         <Image
-          source={require("../assets/kth.png")}
-          style={[styles.image, marginBottom.sm, marginTop.md]}
+          source={require("../assets/book-cover.jpg")}
+          style={styles.image}
         />
-        <Text style={[fontStyles.big, marginBottom.xs]}>Price</Text>
-        <Text style={[fontStyles.small, marginBottom.xs]}>Author</Text>
-        <Text style={[fontStyles.big, fontStyles.boldText, marginBottom.xs]}>
-          Title
+        <Text>
+          <Text style={styles.price}>{this.props.price} SEK</Text>
+          <Text>{"\n"}</Text>
+          <Text style={styles.title}>{this.props.title}</Text>{" "}
         </Text>
       </View>
     );
