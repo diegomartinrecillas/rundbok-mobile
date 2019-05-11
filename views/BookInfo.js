@@ -2,7 +2,11 @@ import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 
+import { Book } from "../models/Book";
+import { NetworkService, RequestStatus } from "../api";
+
 import LogoTitle from "./LogoTitle.js";
+import { ScrollView } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
   breadcrumps: {
@@ -24,7 +28,6 @@ const styles = StyleSheet.create({
     marginRight: 30
   },
   edition: {
-    marginTop: 20,
     color: "#707392",
     fontWeight: "bold"
   },
@@ -58,12 +61,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   seller: {
-    flexDirection: "row",
-    alignItems: "center",
     borderColor: "#d8d9e4",
     borderWidth: 1,
     padding: 25,
-    borderRadius: 4
+    borderRadius: 4,
+    marginBottom: 50
   },
   avatar: {
     backgroundColor: "#d8d9e4",
@@ -82,6 +84,11 @@ const styles = StyleSheet.create({
 });
 
 class BookInfoScreen extends React.Component {
+  state = {
+    book: new Book(null),
+    status: RequestStatus.IDLE
+  };
+
   static navigationOptions = {
     headerTitle: <LogoTitle />,
     headerRight: (
@@ -89,75 +96,116 @@ class BookInfoScreen extends React.Component {
     )
   };
 
+  componentDidMount() {
+    this.setState({
+      status: RequestStatus.LOADING
+    });
+    NetworkService.getListedBookById("32")
+      .then(data => {
+        this.setState({
+          book: new Book(data),
+          status: RequestStatus.SUCCESS
+        });
+      })
+      .catch(() => this.setState({ status: RequestStatus.ERROR }));
+  }
+
   render() {
+    const {
+      author,
+      course,
+      coverPhoto,
+      description,
+      newPrice,
+      personalDescription,
+      pickupLocation,
+      price,
+      programme,
+      releaseYear,
+      student,
+      title
+    } = this.state.book;
+
     return (
       <>
         <View style={styles.container}>
-          <View>
-            <Text style={styles.breadcrumps}>Arquitecture / course name</Text>
-          </View>
-          <View style={{ flexDirection: "row" }}>
+          <ScrollView>
             <View>
-              <Image style={styles.cover} />
+              <Text style={styles.breadcrumps}>
+                {programme && programme.name} / {course && course.name}
+              </Text>
             </View>
-            <View style={{ flex: 1, lexDirection: "column" }}>
+            <View style={{ flexDirection: "row" }}>
               <View>
-                <Text style={styles.edition}>Swedish, 2019</Text>
+                <Image style={styles.cover} source={{ uri: coverPhoto }} />
               </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexShrink: 1,
-                  marginTop: 15,
-                  paddingRight: 10
-                }}
-              >
-                <Text style={styles.heading}>Lorem ipsum dolor sit amore</Text>
+              <View style={{ flex: 1, lexDirection: "column" }}>
+                <View>
+                  <Text style={styles.edition}>{releaseYear}</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flexShrink: 1,
+                    marginTop: 15,
+                    paddingRight: 10
+                  }}
+                >
+                  <Text style={styles.heading}>{title}</Text>
+                </View>
+                <View style={{ marginTop: 10 }}>
+                  <Text style={styles.author}>By {author}</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 30,
+                    alignItems: "baseline"
+                  }}
+                >
+                  <View style={{ marginRight: 10 }}>
+                    <Text style={styles.price}>{price} SEK</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.priceNew}>NEW {newPrice}</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={{ marginTop: 40 }}>
+              <Text style={styles.description}>{description}</Text>
+            </View>
+            <View style={{ marginTop: 40, marginBottom: 20 }}>
+              <Text style={styles.header}>SELLER</Text>
+            </View>
+            <View style={styles.seller}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View>
+                  <Image
+                    style={styles.avatar}
+                    source={{ uri: student && student.avatar }}
+                  />
+                </View>
+                <View style={{ marginLeft: 20 }}>
+                  <View style={{ marginBottom: 5 }}>
+                    <Text style={styles.name}>
+                      {student && student.fullName}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.location}>
+                      {student && student.location}
+                    </Text>
+                  </View>
+                </View>
               </View>
               <View style={{ marginTop: 10 }}>
-                <Text style={styles.author}>By Tara Westover</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 30,
-                  alignItems: "baseline"
-                }}
-              >
-                <View style={{ marginRight: 10 }}>
-                  <Text style={styles.price}>80 SEK</Text>
-                </View>
-                <View>
-                  <Text style={styles.priceNew}>NEW 350</Text>
-                </View>
+                <Text style={styles.description}>{personalDescription}</Text>
               </View>
             </View>
-          </View>
-          <View style={{ marginTop: 40 }}>
-            <Text style={styles.description}>
-              Lorem ipsum dolor sit amet, suas novum vix ei, tempor saperet vis
-              cu. Sit liber incorrupte eu, in hinc audire cum. Ei dico diam qui,
-              alia choro prompta ea vis, ad numquam omittam cum. Pro duis
-              singulis mnesarchum ex, te est aliquip molestiae.
-            </Text>
-          </View>
-          <View style={{ marginTop: 40, marginBottom: 20 }}>
-            <Text style={styles.header}>SELLER</Text>
-          </View>
-          <View style={styles.seller}>
-            <View>
-              <Image style={styles.avatar} />
-            </View>
-            <View style={{ marginLeft: 20 }}>
-              <View style={{ marginBottom: 5 }}>
-                <Text style={styles.name}>John Walton</Text>
-              </View>
-              <View>
-                <Text style={styles.location}>Kista, Stockholm</Text>
-              </View>
-            </View>
-          </View>
+          </ScrollView>
         </View>
+
         <View
           style={{
             position: "absolute",

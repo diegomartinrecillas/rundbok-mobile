@@ -42,7 +42,7 @@ const AppNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "Feed",
+    initialRouteName: "BookInfo",
     defaultNavigationOptions: {
       headerBackTitleStyle: {
         color: "#000",
