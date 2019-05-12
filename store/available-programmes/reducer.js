@@ -13,13 +13,14 @@ export const availableProgrammes = (state = initialState, action) => {
     case START: {
       return {
         ...state,
-        state: RequestStatus.LOADING
+        status: RequestStatus.LOADING
       };
     }
     case SUCCESS: {
       return {
+        ...state,
         programmes: action.data.map(programme => new Programme(programme)),
-        state: RequestStatus.SUCCESS
+        status: RequestStatus.SUCCESS
       };
     }
     case ERROR: {

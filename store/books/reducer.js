@@ -21,15 +21,16 @@ export const books = (state = initialState, action) => {
     case START: {
       return {
         ...state,
-        state: RequestStatus.LOADING
+        status: RequestStatus.LOADING
       };
     }
     case SUCCESS: {
       const books = action.data.map(book => new Book(book));
       fuse = new Fuse(books, options);
       return {
+        ...state,
         data: books,
-        state: RequestStatus.SUCCESS
+        status: RequestStatus.SUCCESS
       };
     }
     case ERROR: {

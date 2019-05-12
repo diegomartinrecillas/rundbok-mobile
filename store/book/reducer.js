@@ -13,13 +13,14 @@ export const book = (state = initialState, action) => {
     case START: {
       return {
         ...state,
-        state: RequestStatus.LOADING
+        status: RequestStatus.LOADING
       };
     }
     case SUCCESS: {
       return {
+        ...state,
         data: new Book(action.data),
-        state: RequestStatus.SUCCESS
+        status: RequestStatus.SUCCESS
       };
     }
     case ERROR: {
