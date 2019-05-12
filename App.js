@@ -1,7 +1,10 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Icon from "react-native-vector-icons/Feather";
+
+import { store } from "./store/";
 
 import BookInfoScreen from "./views/BookInfo.js";
 import FeedScreen from "./views/Feed.js";
@@ -29,7 +32,7 @@ class HomeScreen extends React.Component {
   }
 }
 
-const AppNavigator = createStackNavigator(
+const RootStack = createStackNavigator(
   {
     Home: {
       screen: HomeScreen
@@ -63,4 +66,15 @@ const AppNavigator = createStackNavigator(
   }
 );
 
-export default createAppContainer(AppNavigator);
+const Navigation = createAppContainer(RootStack);
+
+// Render the app container component with the provider around it
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
+    );
+  }
+}

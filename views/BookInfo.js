@@ -1,12 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
+
 import { StyleSheet, Text, View, Image } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
-
-import { Book } from "../models/Book";
-import { NetworkService, RequestStatus } from "../api";
-
-import LogoTitle from "./LogoTitle.js";
 import { ScrollView } from "react-native-gesture-handler";
+
+import { RequestStatus } from "../api";
+import LogoTitle from "./LogoTitle.js";
+import { fetchBook } from "../store";
 
 const styles = StyleSheet.create({
   breadcrumps: {
@@ -84,11 +85,6 @@ const styles = StyleSheet.create({
 });
 
 class BookInfoScreen extends React.Component {
-  state = {
-    book: new Book(null),
-    status: RequestStatus.IDLE
-  };
-
   static navigationOptions = {
     headerTitle: <LogoTitle />,
     headerRight: (
@@ -97,17 +93,9 @@ class BookInfoScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({
-      status: RequestStatus.LOADING
-    });
-    NetworkService.getListedBookById("32")
-      .then(data => {
-        this.setState({
-          book: new Book(data),
-          status: RequestStatus.SUCCESS
-        });
-      })
-      .catch(() => this.setState({ status: RequestStatus.ERROR }));
+    // this should be done BEFORE loading into this view, when the user clicks on a book to view
+    // we should trigger this with its respective ID
+    this.props.fetch("32");
   }
 
   render() {
@@ -124,7 +112,7 @@ class BookInfoScreen extends React.Component {
       releaseYear,
       student,
       title
-    } = this.state.book;
+    } = this.props.book;
 
     return (
       <>
@@ -238,4 +226,15 @@ class BookInfoScreen extends React.Component {
   }
 }
 
-export default BookInfoScreen;
+const mapStateToProps = state => ({
+  book: state.book.data
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetch: id => dispatch(fetchBook(id))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BookInfoScreen);

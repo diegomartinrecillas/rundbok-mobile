@@ -36,6 +36,12 @@ export class NetworkService {
     }/books/search?query=${query}&programme_id=${programmeId}&course_id=${courseId}`;
     return RequestService.get(url);
   }
+  public static getAllBooks() {
+    const url = `${
+      config.apiUrls.rundbok
+    }/books/search?query=&programme_id=&course_id=`;
+    return RequestService.get(url);
+  }
   public static getListedBookById(id: string) {
     const url = `${config.apiUrls.rundbok}/books/${id}`;
     return RequestService.get(url);
