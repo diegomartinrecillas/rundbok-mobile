@@ -1,11 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { ScrollView } from "react-native-gesture-handler";
 import Logo from "../components/Logo";
 import { fetchBook } from "../store";
-import { utilities, colors } from "../global-styles";
+import { utilities, colors, variables } from "../global-styles";
+import Spacing from "../components/Spacing";
 
 const styles = StyleSheet.create({
   bottomButtonStyle: {
@@ -14,76 +15,34 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     paddingTop: 20,
-    paddingBottom: 35
+    paddingBottom: 35,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   },
   bottomButtonOffset: {
-    height: 80
-  },
-  breadcrumps: {
-    color: "#707392",
-    opacity: 0.8,
-    marginBottom: 30
+    height: 79
   },
   cover: {
-    backgroundColor: "#d8d9e4",
-    borderRadius: 4,
-    height: 225,
-    width: 150,
+    backgroundColor: colors.gray,
+    borderRadius: variables.radius,
+    height: 180,
+    width: 127,
     marginRight: 30
   },
-  edition: {
-    color: "#707392",
-    fontWeight: "bold"
-  },
-  heading: {
-    fontSize: 28,
-    flex: 1,
-    flexWrap: "wrap"
-  },
-  author: {
-    color: "#707392",
-    fontSize: 14
-  },
-  price: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#32ab00"
-  },
-  priceNew: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#707392"
-  },
-  description: {
-    color: "#707392",
-    lineHeight: 26,
-    fontSize: 16,
-    fontWeight: "100"
-  },
-  header: {
-    fontSize: 18,
-    fontWeight: "bold"
-  },
   seller: {
-    borderColor: "#d8d9e4",
+    borderColor: colors.mediumGray,
     borderWidth: 1,
     padding: 25,
-    borderRadius: 4,
+    borderRadius: variables.radius,
     marginBottom: 50
   },
-  avatar: {
-    backgroundColor: "#d8d9e4",
-    borderRadius: 35,
+  avatarStyles: {
+    backgroundColor: colors.gray,
     height: 70,
-    width: 70
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: "bold"
-  },
-  location: {
-    fontSize: 14,
-    color: "#707392"
+    width: 70,
+    borderRadius: 35,
+    marginRight: 20
   }
 });
 
@@ -109,117 +68,93 @@ class BookInfoScreen extends React.Component {
       description,
       newPrice,
       personalDescription,
-      pickupLocation,
       price,
       programme,
       releaseYear,
       student,
       title
     } = this.props.book;
-    const { bottomButtonStyle, bottomButtonOffset } = styles;
+    const {
+      bottomButtonStyle,
+      bottomButtonOffset,
+      seller,
+      avatarStyles,
+      cover
+    } = styles;
     const {
       container,
       dFlex,
-      justifyContentCenter,
-      alignItemsCenter
+      alignItemsCenter,
+      textGray,
+      fontBold,
+      textExtraLarge,
+      textLightGray,
+      textNormal,
+      textSmall,
+      textExtraSmall,
+      textLarge,
+      textWhite,
+      textGreen
     } = utilities;
 
-    const bottomButton = (
-      <View
-        style={[
-          bottomButtonStyle,
-          dFlex,
-          justifyContentCenter,
-          alignItemsCenter
-        ]}
-      >
-        <Icon
-          name="send"
-          size={24}
-          style={{ color: "#fff", paddingRight: 20 }}
-          light
-        />
-        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
-          CONTACT SELLER
-        </Text>
-      </View>
-    );
+    if (!student || !programme || !course) {
+      return <Text>Loading...</Text>;
+    }
+
+    const { fullName, avatar, location } = student;
 
     return (
       <>
         <ScrollView contentContainerStyle={container}>
-          <Text style={styles.breadcrumps}>
-            {programme && programme.name} / {course && course.name}
+          <Text style={textLightGray}>
+            {programme.name} / {course.name}
           </Text>
-          <View style={{ flexDirection: "row" }}>
-            <View>
-              <Image style={styles.cover} source={{ uri: coverPhoto }} />
+          <Spacing />
+          <View style={[dFlex, alignItemsCenter]}>
+            <Image style={cover} source={{ uri: coverPhoto }} />
+            <View style={{ flex: 1 }}>
+              <Text style={[textExtraSmall, fontBold, textGray]}>
+                {releaseYear}
+              </Text>
+              <Spacing height={10} />
+              <Text style={[textExtraLarge, fontBold]}>{title}</Text>
+              <Spacing height={10} />
+              <Text style={textGray}>By {author}</Text>
+              <Spacing height={10} />
+              <Text style={[textLarge, fontBold, textGreen]}>
+                {price} SEK{" "}
+                <Text style={[textExtraSmall, fontBold, textGray]}>
+                  NEW {newPrice}
+                </Text>
+              </Text>
             </View>
-            <View style={{ flex: 1, lexDirection: "column" }}>
+          </View>
+          <Spacing />
+          <Text style={[textNormal, textGray]}>{description}</Text>
+          <Spacing />
+          <Text style={[textLarge, fontBold]}>SELLER</Text>
+          <Spacing height={20} />
+          <View style={seller}>
+            <View style={[dFlex, alignItemsCenter]}>
+              <Image style={avatarStyles} source={{ uri: avatar }} />
               <View>
-                <Text style={styles.edition}>{releaseYear}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexShrink: 1,
-                  marginTop: 15,
-                  paddingRight: 10
-                }}
-              >
-                <Text style={styles.heading}>{title}</Text>
-              </View>
-              <View style={{ marginTop: 10 }}>
-                <Text style={styles.author}>By {author}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 30,
-                  alignItems: "baseline"
-                }}
-              >
-                <View style={{ marginRight: 10 }}>
-                  <Text style={styles.price}>{price} SEK</Text>
-                </View>
-                <View>
-                  <Text style={styles.priceNew}>NEW {newPrice}</Text>
-                </View>
+                <Text style={[textNormal, fontBold]}>{fullName}</Text>
+                <Text style={[textSmall, textGray]}>{location}</Text>
               </View>
             </View>
-          </View>
-          <View style={{ marginTop: 40 }}>
-            <Text style={styles.description}>{description}</Text>
-          </View>
-          <View style={{ marginTop: 40, marginBottom: 20 }}>
-            <Text style={styles.header}>SELLER</Text>
-          </View>
-          <View style={styles.seller}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <View>
-                <Image
-                  style={styles.avatar}
-                  source={{ uri: student && student.avatar }}
-                />
-              </View>
-              <View style={{ marginLeft: 20 }}>
-                <View style={{ marginBottom: 5 }}>
-                  <Text style={styles.name}>{student && student.fullName}</Text>
-                </View>
-                <View>
-                  <Text style={styles.location}>
-                    {student && student.location}
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={{ marginTop: 10 }}>
-              <Text style={styles.description}>{personalDescription}</Text>
-            </View>
+            <Spacing height={20} />
+            <Text style={[textNormal, textGray]}>{personalDescription}</Text>
           </View>
         </ScrollView>
         <View style={bottomButtonOffset} />
-        {bottomButton}
+        <TouchableOpacity activeOpacity={0.8} style={bottomButtonStyle}>
+          <Icon
+            name="send"
+            style={[textWhite, { fontSize: 24, paddingRight: 15 }]}
+            light
+          />
+          <Text style={[textLarge, fontBold, textWhite]}>CONTACT SELLER</Text>
+        </TouchableOpacity>
       </>
     );
   }
