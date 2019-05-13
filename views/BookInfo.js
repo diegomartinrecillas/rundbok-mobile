@@ -5,18 +5,24 @@ import Icon from "react-native-vector-icons/Feather";
 import { ScrollView } from "react-native-gesture-handler";
 import Logo from "../components/Logo";
 import { fetchBook } from "../store";
+import { utilities, colors } from "../global-styles";
 
 const styles = StyleSheet.create({
+  bottomButtonStyle: {
+    backgroundColor: colors.black,
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    paddingTop: 20,
+    paddingBottom: 35
+  },
+  bottomButtonOffset: {
+    height: 80
+  },
   breadcrumps: {
     color: "#707392",
     opacity: 0.8,
     marginBottom: 30
-  },
-  container: {
-    marginTop: 40,
-    marginRight: 20,
-    marginBottom: 20,
-    marginLeft: 20
   },
   cover: {
     backgroundColor: "#d8d9e4",
@@ -110,15 +116,41 @@ class BookInfoScreen extends React.Component {
       student,
       title
     } = this.props.book;
+    const { bottomButtonStyle, bottomButtonOffset } = styles;
+    const {
+      container,
+      dFlex,
+      justifyContentCenter,
+      alignItemsCenter
+    } = utilities;
+
+    const bottomButton = (
+      <View
+        style={[
+          bottomButtonStyle,
+          dFlex,
+          justifyContentCenter,
+          alignItemsCenter
+        ]}
+      >
+        <Icon
+          name="send"
+          size={24}
+          style={{ color: "#fff", paddingRight: 20 }}
+          light
+        />
+        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
+          CONTACT SELLER
+        </Text>
+      </View>
+    );
 
     return (
       <>
-        <ScrollView contentContainerStyle={styles.container}>
-          <View>
-            <Text style={styles.breadcrumps}>
-              {programme && programme.name} / {course && course.name}
-            </Text>
-          </View>
+        <ScrollView contentContainerStyle={container}>
+          <Text style={styles.breadcrumps}>
+            {programme && programme.name} / {course && course.name}
+          </Text>
           <View style={{ flexDirection: "row" }}>
             <View>
               <Image style={styles.cover} source={{ uri: coverPhoto }} />
@@ -186,34 +218,8 @@ class BookInfoScreen extends React.Component {
             </View>
           </View>
         </ScrollView>
-
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            backgroundColor: "#000",
-            padding: 20,
-            width: "100%",
-            flexDirection: "row",
-            justifyContent: "center"
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View>
-              <Icon
-                name="send"
-                size={24}
-                style={{ color: "#fff", paddingRight: 20 }}
-                light
-              />
-            </View>
-            <View>
-              <Text style={{ color: "#fff", fontSize: 20, fontWeight: "bold" }}>
-                CONTACT SELLER
-              </Text>
-            </View>
-          </View>
-        </View>
+        <View style={bottomButtonOffset} />
+        {bottomButton}
       </>
     );
   }

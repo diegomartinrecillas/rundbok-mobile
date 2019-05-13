@@ -7,6 +7,25 @@ const colors = {
 };
 
 const utilities = StyleSheet.create({
+  dFlex: {
+    flexDirection: "row"
+  },
+  alignItemsCenter: {
+    alignItems: "center"
+  },
+  justifyContentCenter: {
+    justifyContent: "center"
+  },
+  container: {
+    marginTop: 30,
+    marginBottom: 30,
+    marginRight: 20,
+    marginLeft: 20
+  },
+  backgroundWhite: {
+    flex: 1,
+    backgroundColor: "#fff"
+  },
   textLarge: {
     fontSize: 20
   },
