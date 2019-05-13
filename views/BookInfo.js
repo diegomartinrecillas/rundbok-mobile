@@ -1,12 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-
 import { StyleSheet, Text, View, Image } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { ScrollView } from "react-native-gesture-handler";
-
-import { RequestStatus } from "../api";
-import LogoTitle from "./LogoTitle.js";
+import Logo from "../components/Logo";
 import { fetchBook } from "../store";
 
 const styles = StyleSheet.create({
@@ -86,7 +83,7 @@ const styles = StyleSheet.create({
 
 class BookInfoScreen extends React.Component {
   static navigationOptions = {
-    headerTitle: <LogoTitle />,
+    headerTitle: <Logo />,
     headerRight: (
       <Icon name="share-2" size={24} style={{ paddingRight: 20 }} light />
     )
@@ -116,83 +113,79 @@ class BookInfoScreen extends React.Component {
 
     return (
       <>
-        <View style={styles.container}>
-          <ScrollView>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View>
+            <Text style={styles.breadcrumps}>
+              {programme && programme.name} / {course && course.name}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
             <View>
-              <Text style={styles.breadcrumps}>
-                {programme && programme.name} / {course && course.name}
-              </Text>
+              <Image style={styles.cover} source={{ uri: coverPhoto }} />
             </View>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flex: 1, lexDirection: "column" }}>
               <View>
-                <Image style={styles.cover} source={{ uri: coverPhoto }} />
+                <Text style={styles.edition}>{releaseYear}</Text>
               </View>
-              <View style={{ flex: 1, lexDirection: "column" }}>
-                <View>
-                  <Text style={styles.edition}>{releaseYear}</Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    flexShrink: 1,
-                    marginTop: 15,
-                    paddingRight: 10
-                  }}
-                >
-                  <Text style={styles.heading}>{title}</Text>
-                </View>
-                <View style={{ marginTop: 10 }}>
-                  <Text style={styles.author}>By {author}</Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginTop: 30,
-                    alignItems: "baseline"
-                  }}
-                >
-                  <View style={{ marginRight: 10 }}>
-                    <Text style={styles.price}>{price} SEK</Text>
-                  </View>
-                  <View>
-                    <Text style={styles.priceNew}>NEW {newPrice}</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View style={{ marginTop: 40 }}>
-              <Text style={styles.description}>{description}</Text>
-            </View>
-            <View style={{ marginTop: 40, marginBottom: 20 }}>
-              <Text style={styles.header}>SELLER</Text>
-            </View>
-            <View style={styles.seller}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <View>
-                  <Image
-                    style={styles.avatar}
-                    source={{ uri: student && student.avatar }}
-                  />
-                </View>
-                <View style={{ marginLeft: 20 }}>
-                  <View style={{ marginBottom: 5 }}>
-                    <Text style={styles.name}>
-                      {student && student.fullName}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={styles.location}>
-                      {student && student.location}
-                    </Text>
-                  </View>
-                </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  flexShrink: 1,
+                  marginTop: 15,
+                  paddingRight: 10
+                }}
+              >
+                <Text style={styles.heading}>{title}</Text>
               </View>
               <View style={{ marginTop: 10 }}>
-                <Text style={styles.description}>{personalDescription}</Text>
+                <Text style={styles.author}>By {author}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 30,
+                  alignItems: "baseline"
+                }}
+              >
+                <View style={{ marginRight: 10 }}>
+                  <Text style={styles.price}>{price} SEK</Text>
+                </View>
+                <View>
+                  <Text style={styles.priceNew}>NEW {newPrice}</Text>
+                </View>
               </View>
             </View>
-          </ScrollView>
-        </View>
+          </View>
+          <View style={{ marginTop: 40 }}>
+            <Text style={styles.description}>{description}</Text>
+          </View>
+          <View style={{ marginTop: 40, marginBottom: 20 }}>
+            <Text style={styles.header}>SELLER</Text>
+          </View>
+          <View style={styles.seller}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View>
+                <Image
+                  style={styles.avatar}
+                  source={{ uri: student && student.avatar }}
+                />
+              </View>
+              <View style={{ marginLeft: 20 }}>
+                <View style={{ marginBottom: 5 }}>
+                  <Text style={styles.name}>{student && student.fullName}</Text>
+                </View>
+                <View>
+                  <Text style={styles.location}>
+                    {student && student.location}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={{ marginTop: 10 }}>
+              <Text style={styles.description}>{personalDescription}</Text>
+            </View>
+          </View>
+        </ScrollView>
 
         <View
           style={{

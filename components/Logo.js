@@ -1,15 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
 import { Image } from "react-native";
 
-class LogoTitle extends React.Component {
+class Logo extends Component {
   render() {
     return (
       <Image
         source={require("../assets/rundbok-logo-black.png")}
-        style={{ width: 120, aspectRatio: 672 / 96 }}
+        style={{ width: 140 }}
+        resizeMode="contain"
       />
     );
   }
 }
 
-export default LogoTitle;
+export default Logo;

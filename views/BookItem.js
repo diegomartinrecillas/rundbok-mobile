@@ -2,12 +2,8 @@ import React from "react";
 import { StyleSheet, Text, Image, View } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    margin: 10
-  },
   image: {
-    aspectRatio: 2 / 3,
+    resizeMode: "cover",
     marginBottom: 20,
     alignItems: "center",
     justifyContent: "center"
@@ -30,11 +26,8 @@ const styles = StyleSheet.create({
 class BookItem extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Image
-          source={require("../assets/book-cover.jpg")}
-          style={styles.image}
-        />
+      <View>
+        <Image style={styles.image} />
         <Text>
           <Text style={styles.price}>{this.props.price} SEK</Text>
           <Text>{"\n"}</Text>

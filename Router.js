@@ -30,7 +30,7 @@ const RootStack = createStackNavigator(
       },
       headerBackTitle: " ",
       headerBackImage: (
-        <Icon name="chevron-left" size={30} style={{ paddingLeft: 15 }} />
+        <Icon name="arrow-left" size={30} style={{ paddingLeft: 15 }} />
       ),
       headerStyle: {
         backgroundColor: "#fff",
