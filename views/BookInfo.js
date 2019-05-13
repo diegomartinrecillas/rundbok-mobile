@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, Share, Linking } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { ScrollView } from "react-native-gesture-handler";
 import Logo from "../components/Logo";
 import { fetchBook } from "../store";
 import { utilities, colors, variables } from "../global-styles";
 import Spacing from "../components/Spacing";
+import Touchable from "../components/Touchable";
 
 const styles = StyleSheet.create({
   bottomButtonStyle: {
@@ -47,17 +48,43 @@ const styles = StyleSheet.create({
 });
 
 class BookInfoScreen extends React.Component {
-  static navigationOptions = {
-    headerTitle: <Logo />,
-    headerRight: (
-      <Icon name="share-2" size={24} style={{ paddingRight: 20 }} light />
-    )
+  static navigationOptions = ({ navigation }) => {
+    const shareBook = navigation.getParam("shareBook", null);
+    return {
+      headerTitle: <Logo />,
+      headerRight: (
+        <Touchable onPress={shareBook}>
+          <Icon name="share-2" size={24} style={{ paddingRight: 20 }} light />
+        </Touchable>
+      )
+    };
   };
 
   componentDidMount() {
     // this should be done BEFORE loading into this view, when the user clicks on a book to view
     // we should trigger this with its respective ID
     this.props.fetch("32");
+    this.updateNavigationParams();
+  }
+
+  updateNavigationParams() {
+    const { navigation } = this.props;
+
+    navigation.setParams({
+      shareBook: () => this.share()
+    });
+  }
+
+  share() {
+    const { id, title } = this.props.book;
+
+    let message = `Look at this great book from Rundbok! `;
+    message += `I think ${title} might be something for you https://rundbok.dev.sharpmind.se/book/${id}`;
+
+    Share.share({
+      message,
+      title: `Rundbok`
+    });
   }
 
   render() {
@@ -101,7 +128,7 @@ class BookInfoScreen extends React.Component {
       return <Text>Loading...</Text>;
     }
 
-    const { fullName, avatar, location } = student;
+    const { fullName, avatar, location, email } = student;
 
     return (
       <>
@@ -147,14 +174,17 @@ class BookInfoScreen extends React.Component {
           </View>
         </ScrollView>
         <View style={bottomButtonOffset} />
-        <TouchableOpacity activeOpacity={0.8} style={bottomButtonStyle}>
+        <Touchable
+          onPress={() => Linking.openURL(`mailto:${email}`)}
+          style={bottomButtonStyle}
+        >
           <Icon
             name="send"
             style={[textWhite, { fontSize: 24, paddingRight: 15 }]}
             light
           />
           <Text style={[textLarge, fontBold, textWhite]}>CONTACT SELLER</Text>
-        </TouchableOpacity>
+        </Touchable>
       </>
     );
   }
