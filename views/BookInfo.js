@@ -61,9 +61,6 @@ class BookInfoScreen extends React.Component {
   };
 
   componentDidMount() {
-    // this should be done BEFORE loading into this view, when the user clicks on a book to view
-    // we should trigger this with its respective ID
-    this.props.fetch("32");
     this.updateNavigationParams();
   }
 

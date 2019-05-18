@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Text, View, Button } from "react-native";
 import { utilities } from "../global-styles";
 import {
+  fetchBook,
   fetchBooks,
   fetchCourses,
   fetchProgrammes,
@@ -24,6 +25,7 @@ class HomeScreen extends React.Component {
   render() {
     const { backgroundWhite } = utilities;
     const {
+      fetchBook,
       navigation,
       booksByCourse,
       courseById,
@@ -48,7 +50,16 @@ class HomeScreen extends React.Component {
                 {programme && programme.name}
               </Text>
               {booksByProgramme[programmeId].map(book => (
-                <Text key={book.id}>{book.title}</Text>
+                <Text
+                  style={{ padding: 10 }}
+                  key={book.id}
+                  onPress={() => {
+                    navigation.navigate("BookInfo");
+                    fetchBook(book.id);
+                  }}
+                >
+                  {book.title}
+                </Text>
               ))}
             </View>
           );
@@ -63,7 +74,16 @@ class HomeScreen extends React.Component {
                 {course && course.name}
               </Text>
               {booksByCourse[courseId].map(book => (
-                <Text key={book.id}>{book.title}</Text>
+                <Text
+                  style={{ padding: 10 }}
+                  key={book.id}
+                  onPress={() => {
+                    navigation.navigate("BookInfo");
+                    fetchBook(book.id);
+                  }}
+                >
+                  {book.title}
+                </Text>
               ))}
             </View>
           );
@@ -82,6 +102,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  fetchBook: id => dispatch(fetchBook(id)),
   fetchBooks: _ => dispatch(fetchBooks()),
   fetchCourses: _ => dispatch(fetchCourses()),
   fetchProgrammes: _ => dispatch(fetchProgrammes())
