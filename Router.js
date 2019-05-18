@@ -36,7 +36,8 @@ const RootStack = createStackNavigator(
         backgroundColor: "#fff",
         borderBottomWidth: 0,
         elevation: 0,
-        shadowColor: "transparent"
+        shadowColor: "transparent",
+        height: 60
       }
     }
   }

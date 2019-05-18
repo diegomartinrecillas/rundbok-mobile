@@ -8,6 +8,8 @@ import { fetchBook } from "../store";
 import { utilities, colors, variables } from "../global-styles";
 import Spacing from "../components/Spacing";
 import Touchable from "../components/Touchable";
+import LoadingScreen from "../components/LoadingScreen";
+import { SafeAreaView } from "react-navigation";
 
 const styles = StyleSheet.create({
   bottomButtonStyle: {
@@ -125,7 +127,7 @@ class BookInfoScreen extends React.Component {
     } = utilities;
 
     if (!student || !programme || !course) {
-      return <Text>Loading...</Text>;
+      return <LoadingScreen />;
     }
 
     const { fullName, avatar, location, email } = student;
@@ -133,47 +135,50 @@ class BookInfoScreen extends React.Component {
     return (
       <>
         <ScrollView contentContainerStyle={container}>
-          <Text style={textLightGray}>
-            {programme.name} / {course.name}
-          </Text>
-          <Spacing />
-          <View style={[dFlex, alignItemsCenter]}>
-            <Image style={cover} source={{ uri: coverPhoto }} />
-            <View style={{ flex: 1 }}>
-              <Text style={[textExtraSmall, fontBold, textGray]}>
-                {releaseYear}
-              </Text>
-              <Spacing height={10} />
-              <Text style={[textExtraLarge, fontBold]}>{title}</Text>
-              <Spacing height={10} />
-              <Text style={textGray}>By {author}</Text>
-              <Spacing height={10} />
-              <Text style={[textLarge, fontBold, textGreen]}>
-                {price} SEK{" "}
-                <Text style={[textExtraSmall, fontBold, textGray]}>
-                  NEW {newPrice}
-                </Text>
-              </Text>
-            </View>
-          </View>
-          <Spacing />
-          <Text style={[textNormal, textGray]}>{description}</Text>
-          <Spacing />
-          <Text style={[textLarge, fontBold]}>SELLER</Text>
-          <Spacing height={20} />
-          <View style={seller}>
+          <SafeAreaView>
+            <Spacing />
+            <Text style={textLightGray}>
+              {programme.name} / {course.name}
+            </Text>
+            <Spacing />
             <View style={[dFlex, alignItemsCenter]}>
-              <Image style={avatarStyles} source={{ uri: avatar }} />
-              <View>
-                <Text style={[textNormal, fontBold]}>{fullName}</Text>
-                <Text style={[textSmall, textGray]}>{location}</Text>
+              <Image style={cover} source={{ uri: coverPhoto }} />
+              <View style={{ flex: 1 }}>
+                <Text style={[textExtraSmall, fontBold, textGray]}>
+                  {releaseYear}
+                </Text>
+                <Spacing height={10} />
+                <Text style={[textExtraLarge, fontBold]}>{title}</Text>
+                <Spacing height={10} />
+                <Text style={textGray}>By {author}</Text>
+                <Spacing height={10} />
+                <Text style={[textLarge, fontBold, textGreen]}>
+                  {price} SEK{" "}
+                  <Text style={[textExtraSmall, fontBold, textGray]}>
+                    NEW {newPrice}
+                  </Text>
+                </Text>
               </View>
             </View>
+            <Spacing />
+            <Text style={[textNormal, textGray]}>{description}</Text>
+            <Spacing />
+            <Text style={[textLarge, fontBold]}>SELLER</Text>
             <Spacing height={20} />
-            <Text style={[textNormal, textGray]}>{personalDescription}</Text>
-          </View>
+            <View style={seller}>
+              <View style={[dFlex, alignItemsCenter]}>
+                <Image style={avatarStyles} source={{ uri: avatar }} />
+                <View>
+                  <Text style={[textNormal, fontBold]}>{fullName}</Text>
+                  <Text style={[textSmall, textGray]}>{location}</Text>
+                </View>
+              </View>
+              <Spacing height={20} />
+              <Text style={[textNormal, textGray]}>{personalDescription}</Text>
+            </View>
+            <Spacing />
+          </SafeAreaView>
         </ScrollView>
-        <View style={bottomButtonOffset} />
         <Touchable
           onPress={() => Linking.openURL(`mailto:${email}`)}
           style={bottomButtonStyle}

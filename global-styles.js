@@ -27,10 +27,8 @@ const utilities = StyleSheet.create({
   },
 
   container: {
-    marginTop: 30,
-    marginBottom: 30,
-    marginRight: 20,
-    marginLeft: 20
+    paddingRight: 20,
+    paddingLeft: 20
   },
 
   backgroundWhite: {
