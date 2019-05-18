@@ -50,3 +50,22 @@ export const books = (state = initialState, action) => {
       return state;
   }
 };
+
+export const selectBooksByProgramme = state => {
+  return groupBy("programmeId")(state.books.data);
+};
+
+export const selectBooksByCourse = state => {
+  return groupBy("courseId")(state.books.data);
+};
+
+const groupBy = key => array =>
+  array
+    ? array.reduce(
+        (objectsByKeyValue, obj) => ({
+          ...objectsByKeyValue,
+          [obj[key]]: (objectsByKeyValue[obj[key]] || []).concat(obj)
+        }),
+        {}
+      )
+    : {};

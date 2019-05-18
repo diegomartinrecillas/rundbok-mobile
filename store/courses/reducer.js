@@ -1,14 +1,14 @@
 import { RequestStatus } from "../../api";
 import { START, SUCCESS, ERROR } from "./actions";
-import { Programme } from "../../models/Programme";
+import { Course } from "../../models/Course";
 
 const initialState = {
-  programmes: [],
+  data: [],
   error: null,
   status: RequestStatus.IDLE
 };
 
-export const availableProgrammes = (state = initialState, action) => {
+export const courses = (state = initialState, action) => {
   switch (action.type) {
     case START: {
       return {
@@ -19,7 +19,7 @@ export const availableProgrammes = (state = initialState, action) => {
     case SUCCESS: {
       return {
         ...state,
-        programmes: action.data.map(programme => new Programme(programme)),
+        data: action.data.map(course => new Course(course)),
         status: RequestStatus.SUCCESS
       };
     }
@@ -33,4 +33,10 @@ export const availableProgrammes = (state = initialState, action) => {
     default:
       return state;
   }
+};
+
+export const selectCourseById = state => id => {
+  const courses = state.courses.data;
+
+  return courses && courses.find(course => course.id == id);
 };

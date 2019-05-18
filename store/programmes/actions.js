@@ -1,7 +1,7 @@
 import { pfx } from "../../utils/pfx";
 import { NetworkService } from "../../api";
 
-const base = "@@app/available-programmes";
+const base = "@@app/programmes";
 
 export const START = pfx(base, "START");
 const start = _ => ({ type: START });
@@ -12,7 +12,7 @@ const success = data => ({ type: SUCCESS, data });
 export const ERROR = pfx(base, "ERROR");
 const error = error => ({ type: ERROR, error });
 
-export const fetchAvailableProgrammes = _ => {
+export const fetchProgrammes = _ => {
   return async dispatch => {
     dispatch(start());
     try {

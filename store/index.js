@@ -1,14 +1,16 @@
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
 
-import { availableProgrammes } from "./available-programmes/reducer";
 import { book } from "./book/reducer";
 import { books } from "./books/reducer";
+import { courses } from "./courses/reducer";
+import { programmes } from "./programmes/reducer";
 
 const reducers = combineReducers({
-  availableProgrammes,
   book,
-  books
+  books,
+  courses,
+  programmes
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -20,6 +22,12 @@ export const store = createStore(
 );
 
 // export actions
-export { fetchAvailableProgrammes } from "./available-programmes/actions";
 export { fetchBook } from "./book/actions";
-export { loadBooks, searchBooks } from "./books/actions";
+export { fetchBooks, searchBooks } from "./books/actions";
+export { fetchCourses } from "./courses/actions";
+export { fetchProgrammes } from "./programmes/actions";
+
+// export selectors
+export { selectBooksByProgramme, selectBooksByCourse } from "./books/reducer";
+export { selectCourseById } from "./courses/reducer";
+export { selectProgrammeById } from "./programmes/reducer";
