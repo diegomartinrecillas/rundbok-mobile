@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     marginBottom: 20,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    height: 100
   },
   price: {
     color: "#32ab00",
@@ -25,13 +26,14 @@ const styles = StyleSheet.create({
 
 class BookItem extends React.Component {
   render() {
+    const { id, coverPhoto, price, title } = this.props.book;
     return (
-      <View>
-        <Image style={styles.image} />
+      <View key={id}>
+        <Image style={styles.image} source={{ uri: coverPhoto }} />
         <Text>
-          <Text style={styles.price}>{this.props.price} SEK</Text>
+          <Text style={styles.price}>{price} SEK</Text>
           <Text>{"\n"}</Text>
-          <Text style={styles.title}>{this.props.title}</Text>{" "}
+          <Text style={styles.title}>{title}</Text>{" "}
         </Text>
       </View>
     );

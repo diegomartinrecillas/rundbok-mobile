@@ -16,6 +16,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import LoadingScreen from "../components/LoadingScreen";
 import Logo from "../components/Logo";
 import Spacing from "../components/Spacing";
+import BookGroup from "./BookGroup";
 
 class HomeScreen extends React.Component {
   static navigationOptions = () => {
@@ -67,22 +68,29 @@ class HomeScreen extends React.Component {
             const programme = programmeById(programmeId);
             return (
               <View key={programmeId}>
-                <Text style={{ fontWeight: "bold" }}>
-                  {programme && programme.name}
-                </Text>
-                {booksByProgramme[programmeId].map(book => (
-                  <Text
-                    style={{ padding: 10 }}
-                    key={book.id}
-                    onPress={() => {
-                      navigation.navigate("BookInfo");
-                      fetchBook(book.id);
-                    }}
-                  >
-                    {book.title}
-                  </Text>
-                ))}
+                <BookGroup
+                  programme={programme.name}
+                  books={booksByProgramme[programmeId]}
+                />
               </View>
+
+              // <View key={programmeId}>
+              //   <Text style={{ fontWeight: "bold" }}>
+              //     {programme && programme.name}
+              //   </Text>
+              //   {booksByProgramme[programmeId].map(book => (
+              //     <Text
+              //       style={{ padding: 10 }}
+              //       key={book.id}
+              //       onPress={() => {
+              //         navigation.navigate("BookInfo");
+              //         fetchBook(book.id);
+              //       }}
+              //     >
+              //       {book.title}
+              //     </Text>
+              //   ))}
+              // </View>
             );
           })}
 
