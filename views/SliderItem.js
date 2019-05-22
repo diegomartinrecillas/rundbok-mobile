@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, Image, View } from "react-native";
-import Spacing from "../components/Spacing";
+import BookItem from "./BookItem";
 
 const styles = StyleSheet.create({
   image: {
@@ -25,13 +25,15 @@ const styles = StyleSheet.create({
   }
 });
 
-class BookItem extends React.Component {
+class SliderItem extends React.Component {
   render() {
-    const { id, coverPhoto, price, title } = this.props.book;
+    const { firstItem, secondItem } = this.props;
     const { image, priceStyle, titleStyle, container } = styles;
     return (
       <>
-        {this.props.book ? (
+        <BookItem book={firstItem} />
+        {/* <BookItem book={secondItem} /> */}
+        {/* {this.props.book ? (
           <View style={container} key={id}>
             <Image style={image} source={{ uri: coverPhoto }} />
             <Text>
@@ -40,10 +42,10 @@ class BookItem extends React.Component {
               <Text style={titleStyle}>{title}</Text>{" "}
             </Text>
           </View>
-        ) : null}
+        ) : null} */}
       </>
     );
   }
 }
 
-export default BookItem;
+export default SliderItem;

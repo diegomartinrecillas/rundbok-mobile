@@ -1,11 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
-import IconFA from "react-native-vector-icons/FontAwesome";
-import BookItem from "./BookItem";
 import Spacing from "../components/Spacing";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { sliderWidth, itemWidth } from "../components/CarouselStyle";
+import { BookItem } from "./BookItem";
+import SliderItem from "./SliderItem";
 
 const styles = StyleSheet.create({
   container: {
@@ -23,15 +23,49 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 1,
     flexDirection: "row"
+  },
+  activeDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.8)"
   }
 });
 
 class BookGroup extends React.Component {
+  constructor(props) {
+    super(props);
+    this.books = this.groupBooksinPairs();
+    this.state = {
+      activeDotIndex: 0
+    };
+  }
+
+  groupBooksinPairs() {
+    const { books } = this.props;
+    let booksInPairs = [];
+    for (let i = 0; i < books.length; i += 2) {
+      booksInPairs.push({
+        firstItem: books[i],
+        secondItem: books[i + 1] ? books[i + 1] : null
+      });
+    }
+    console.log(booksInPairs);
+
+    return booksInPairs;
+  }
   _renderItem({ item, index }) {
-    return <BookItem key={index} book={item} />;
+    return (
+      // <View key={index} style={{ flex: 1, flexDirection: "row" }}>
+      //   <BookItem book={item.firstItem} />
+      // </View>
+      <SliderItem firstItem={item.firstItem} secondItem={item.secondItem} />
+    );
   }
   render() {
-    const { programme, books } = this.props;
+    const { programme } = this.props;
+    const { activeDot } = styles;
+    const { activeDotIndex } = this.state;
     return (
       <View style={styles.container}>
         <View style={{ marginLeft: 10 }}>
@@ -42,52 +76,33 @@ class BookGroup extends React.Component {
             <Icon name="arrowright" size={24} light />
           </Text>
         </View>
+        <Spacing height={20} />
 
         <Carousel
           ref={c => {
             this._carousel = c;
           }}
-          data={books}
+          data={this.books}
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
-          itemWidth={itemWidth}
-          layout={"default"}
+          itemWidth={itemWidth / 2}
+          activeSlideOffset={10}
+          onSnapToItem={index =>
+            this.setState(previousState => ({
+              activeDotIndex: index
+            }))
+          }
         />
 
         <Pagination
-          dotsLength={books.length}
-          activeDotIndex={1}
-          containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.75)" }}
-          dotStyle={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            marginHorizontal: 8,
-            backgroundColor: "rgba(255, 255, 255, 0.92)"
-          }}
-          inactiveDotStyle={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            marginHorizontal: 8,
-            backgroundColor: "rgba(0, 0, 0, 0.92)"
-          }}
-          inactiveDotOpacity={0.4}
-          inactiveDotScale={0.6}
+          dotsLength={this.books.length}
+          activeDotIndex={activeDotIndex}
+          dotStyle={activeDot}
+          inactiveDotOpacity={0.2}
+          inactiveDotScale={1}
+          carouselRef={this._carousel}
+          tappableDots={!!this._carousel}
         />
-
-        {/* <ScrollView style={styles.container} horizontal>
-          {books.map(book => (
-            <BookItem key={book.id} book={book} />
-          ))}
-        </ScrollView> */}
-
-        {/* <View style={styles.pagination}>
-          <IconFA name="circle-o" style={{ paddingRight: 2 }} />
-          <IconFA name="circle" style={{ paddingRight: 2 }} />
-          <IconFA name="circle-o" style={{ paddingRight: 2 }} />
-          <IconFA name="circle-o" style={{ paddingRight: 2 }} />
-        </View> */}
       </View>
     );
   }

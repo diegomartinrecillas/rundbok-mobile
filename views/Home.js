@@ -64,6 +64,7 @@ class HomeScreen extends React.Component {
         <SafeAreaView>
           <Spacing />
           <Text style={{ fontSize: 30 }}>By programmes</Text>
+          <Spacing height={30} />
           {Object.keys(booksByProgramme).map(programmeId => {
             const programme = programmeById(programmeId);
             return (
@@ -73,24 +74,6 @@ class HomeScreen extends React.Component {
                   books={booksByProgramme[programmeId]}
                 />
               </View>
-
-              // <View key={programmeId}>
-              //   <Text style={{ fontWeight: "bold" }}>
-              //     {programme && programme.name}
-              //   </Text>
-              //   {booksByProgramme[programmeId].map(book => (
-              //     <Text
-              //       style={{ padding: 10 }}
-              //       key={book.id}
-              //       onPress={() => {
-              //         navigation.navigate("BookInfo");
-              //         fetchBook(book.id);
-              //       }}
-              //     >
-              //       {book.title}
-              //     </Text>
-              //   ))}
-              // </View>
             );
           })}
 
