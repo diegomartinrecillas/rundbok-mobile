@@ -93,11 +93,9 @@ class HomeScreen extends React.Component {
   }
 
   showModal() {
-    console.log("hey");
-
-    this.setState({
-      showModal: true
-    });
+    this.setState(previousState => ({
+      showModal: !previousState.showModal
+    }));
   }
 
   render() {
