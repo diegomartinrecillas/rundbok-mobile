@@ -39,12 +39,13 @@ const styles = StyleSheet.create({
 });
 
 class HomeScreen extends React.Component {
-  static navigationOptions = () => {
+  static navigationOptions = ({ navigation }) => {
+    const searchModal = navigation.getParam("searchModal", null);
     return {
       headerLeft: <Logo kthLogo styles={{ marginLeft: 20, width: 220 }} />,
       headerRight: (
         <Touchable
-          onPress={() => console.log("hej")}
+          onPress={searchModal}
           activeOpacity={0.7}
           style={{
             marginRight: 20,
@@ -72,7 +73,16 @@ class HomeScreen extends React.Component {
     };
   }
 
+  updateNavigationParams() {
+    const { navigation } = this.props;
+
+    navigation.setParams({
+      searchModal: () => this.showModal()
+    });
+  }
+
   async componentDidMount() {
+    this.updateNavigationParams();
     this.setState({ isLoading: true });
 
     await this.props.fetchBooks();
@@ -83,6 +93,8 @@ class HomeScreen extends React.Component {
   }
 
   showModal() {
+    console.log("hey");
+
     this.setState({
       showModal: true
     });
@@ -168,7 +180,7 @@ class HomeScreen extends React.Component {
               );
             })}
 
-          <SearchModal showModal={false} />
+          {showModal && <SearchModal showModal={showModal} />}
         </SafeAreaView>
       </ScrollView>
     );
