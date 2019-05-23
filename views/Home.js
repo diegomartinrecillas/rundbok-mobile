@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { View, SafeAreaView } from "react-native";
+import { View, SafeAreaView, Button, Text } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { utilities } from "../global-styles";
 import {
@@ -79,7 +79,75 @@ class HomeScreen extends React.Component {
     return (
       <ScrollView contentContainerStyle={container}>
         <SafeAreaView>
-          <Spacing height={40} />
+          <Spacing height={20} />
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              alignContent: "flex-start"
+            }}
+          >
+            <View
+              style={
+                selectedTab === "programmes"
+                  ? {
+                      padding: 5,
+                      borderRadius: 5,
+                      backgroundColor: "#f5f5f5"
+                    }
+                  : {
+                      padding: 5,
+                      borderRadius: 5,
+                      backgroundColor: "#fff"
+                    }
+              }
+            >
+              <Button
+                onPress={() => {
+                  const { selectedTab } = this.state;
+                  if (selectedTab != "programmes") {
+                    this.setState({
+                      selectedTab: "programmes"
+                    });
+                  }
+                }}
+                title="Programmes"
+                accessibilityLabel="Sort by programmes"
+                color="#000"
+              />
+            </View>
+
+            <View
+              style={
+                selectedTab === "courses"
+                  ? {
+                      padding: 5,
+                      borderRadius: 5,
+                      backgroundColor: "#f5f5f5"
+                    }
+                  : {
+                      padding: 5,
+                      borderRadius: 5,
+                      backgroundColor: "#fff"
+                    }
+              }
+            >
+              <Button
+                onPress={() => {
+                  const { selectedTab } = this.state;
+                  if (selectedTab != "courses") {
+                    this.setState({
+                      selectedTab: "courses"
+                    });
+                  }
+                }}
+                title="Courses"
+                accessibilityLabel="Sort by courses"
+                color="#000"
+              />
+            </View>
+          </View>
+          <Spacing />
           {selectedTab === "programmes" &&
             Object.keys(booksByProgramme).map(programmeId => {
               const programme = programmeById(programmeId);
