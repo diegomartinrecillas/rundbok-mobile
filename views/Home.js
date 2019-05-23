@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Text, View, Button, SafeAreaView } from "react-native";
+import { Text, View, Button, SafeAreaView, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { utilities } from "../global-styles";
 import {
@@ -17,6 +17,25 @@ import LoadingScreen from "../components/LoadingScreen";
 import Logo from "../components/Logo";
 import Spacing from "../components/Spacing";
 import BookGroup from "./BookGroup";
+import SearchModal from "./SearchModal";
+
+const styles = StyleSheet.create({
+  activeBtn: {
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: "#f5f5f5"
+  },
+  defaultBtn: {
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: "#fff"
+  },
+  btnPanel: {
+    flex: 1,
+    flexDirection: "row",
+    alignContent: "flex-start"
+  }
+});
 
 class HomeScreen extends React.Component {
   static navigationOptions = () => {
@@ -39,7 +58,8 @@ class HomeScreen extends React.Component {
 
     this.state = {
       isLoading: false,
-      selectedTab: "programmes"
+      selectedTab: "programmes",
+      showModal: false
     };
   }
 
@@ -53,6 +73,12 @@ class HomeScreen extends React.Component {
     this.setState({ isLoading: false });
   }
 
+  showModal() {
+    this.setState({
+      showModal: true
+    });
+  }
+
   render() {
     const { container } = utilities;
     const {
@@ -61,7 +87,8 @@ class HomeScreen extends React.Component {
       booksByProgramme,
       programmeById
     } = this.props;
-    const { isLoading, selectedTab } = this.state;
+    const { isLoading, selectedTab, showModal } = this.state;
+    const { activeBtn, defaultBtn, btnPanel } = styles;
 
     if (isLoading) {
       return <LoadingScreen />;
@@ -71,28 +98,8 @@ class HomeScreen extends React.Component {
       <ScrollView contentContainerStyle={container}>
         <SafeAreaView>
           <Spacing />
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignContent: "flex-start"
-            }}
-          >
-            <View
-              style={
-                selectedTab === "programmes"
-                  ? {
-                      padding: 5,
-                      borderRadius: 5,
-                      backgroundColor: "#f5f5f5"
-                    }
-                  : {
-                      padding: 5,
-                      borderRadius: 5,
-                      backgroundColor: "#fff"
-                    }
-              }
-            >
+          <View style={btnPanel}>
+            <View style={selectedTab === "programmes" ? activeBtn : defaultBtn}>
               <Button
                 onPress={() => {
                   const { selectedTab } = this.state;
@@ -108,21 +115,7 @@ class HomeScreen extends React.Component {
               />
             </View>
 
-            <View
-              style={
-                selectedTab === "courses"
-                  ? {
-                      padding: 5,
-                      borderRadius: 5,
-                      backgroundColor: "#f5f5f5"
-                    }
-                  : {
-                      padding: 5,
-                      borderRadius: 5,
-                      backgroundColor: "#fff"
-                    }
-              }
-            >
+            <View style={selectedTab === "courses" ? activeBtn : defaultBtn}>
               <Button
                 onPress={() => {
                   const { selectedTab } = this.state;
@@ -168,6 +161,8 @@ class HomeScreen extends React.Component {
                 </View>
               );
             })}
+
+          <SearchModal showModal={true} />
         </SafeAreaView>
       </ScrollView>
     );
