@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
   },
   container: {
     textAlign: "left",
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    width: 160
   }
 });
 
@@ -34,6 +35,7 @@ class BookItem extends React.Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     const { book, fetchBook, navigation } = this.props;
     const { id, coverPhoto, price, title } = book;
