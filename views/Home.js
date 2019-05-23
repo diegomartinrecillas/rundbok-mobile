@@ -18,6 +18,7 @@ import Logo from "../components/Logo";
 import Spacing from "../components/Spacing";
 import BookGroup from "./BookGroup";
 import SearchModal from "./SearchModal";
+import Touchable from "../components/Touchable";
 
 const styles = StyleSheet.create({
   activeBtn: {
@@ -40,15 +41,23 @@ const styles = StyleSheet.create({
 class HomeScreen extends React.Component {
   static navigationOptions = () => {
     return {
-      headerLeft: <Logo kthLogo styles={{ marginLeft: 20, width: 240 }} />,
+      headerLeft: <Logo kthLogo styles={{ marginLeft: 20, width: 220 }} />,
       headerRight: (
-        <Icon
-          name="search"
-          size={30}
-          style={{ paddingRight: 20 }}
-          light
-          onPress={() => {}}
-        />
+        <Touchable
+          onPress={() => console.log("hej")}
+          activeOpacity={0.7}
+          style={{
+            marginRight: 20,
+            width: 45,
+            height: 45,
+            borderRadius: 25,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#F5F5F5"
+          }}
+        >
+          <Icon name="search" size={24} />
+        </Touchable>
       )
     };
   };
@@ -131,11 +140,7 @@ class HomeScreen extends React.Component {
               />
             </View>
           </View>
-
-          <Spacing height={30} />
-          <Text style={{ fontSize: 24, marginLeft: 10 }}>By {selectedTab}</Text>
-          <Spacing height={20} />
-
+          <Spacing />
           {selectedTab === "programmes" &&
             Object.keys(booksByProgramme).map(programmeId => {
               const programme = programmeById(programmeId);
@@ -145,6 +150,7 @@ class HomeScreen extends React.Component {
                     programme={programme.name}
                     books={booksByProgramme[programmeId]}
                   />
+                  <Spacing height={50} />
                 </View>
               );
             })}
@@ -162,7 +168,7 @@ class HomeScreen extends React.Component {
               );
             })}
 
-          <SearchModal showModal={true} />
+          <SearchModal showModal={false} />
         </SafeAreaView>
       </ScrollView>
     );
@@ -187,5 +193,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(HomeScreen);
-
-// export default HomeScreen;
