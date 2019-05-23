@@ -37,7 +37,7 @@ const utilities = StyleSheet.create({
   },
 
   textExtraLarge: {
-    fontSize: 21
+    fontSize: 20
   },
 
   textLarge: {

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Text, View, Button, SafeAreaView } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { View, SafeAreaView } from "react-native";
+import Icon from "react-native-vector-icons/Feather";
 import { utilities } from "../global-styles";
 import {
   fetchBooks,
@@ -17,19 +17,28 @@ import LoadingScreen from "../components/LoadingScreen";
 import Logo from "../components/Logo";
 import Spacing from "../components/Spacing";
 import BookGroup from "./BookGroup";
+import Touchable from "../components/Touchable";
 
 class HomeScreen extends React.Component {
   static navigationOptions = () => {
     return {
-      headerLeft: <Logo kthLogo styles={{ marginLeft: 20, width: 240 }} />,
+      headerLeft: <Logo kthLogo styles={{ marginLeft: 20, width: 220 }} />,
       headerRight: (
-        <Icon
-          name="search"
-          size={30}
-          style={{ paddingRight: 20 }}
-          light
-          onPress={() => {}}
-        />
+        <Touchable
+          onPress={() => console.log("hej")}
+          activeOpacity={0.7}
+          style={{
+            marginRight: 20,
+            width: 45,
+            height: 45,
+            borderRadius: 25,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#F5F5F5"
+          }}
+        >
+          <Icon name="search" size={24} />
+        </Touchable>
       )
     };
   };
@@ -70,10 +79,7 @@ class HomeScreen extends React.Component {
     return (
       <ScrollView contentContainerStyle={container}>
         <SafeAreaView>
-          <Spacing />
-          <Text style={{ fontSize: 30 }}>By programmes</Text>
-          <Spacing height={30} />
-
+          <Spacing height={40} />
           {selectedTab === "programmes" &&
             Object.keys(booksByProgramme).map(programmeId => {
               const programme = programmeById(programmeId);
@@ -83,12 +89,11 @@ class HomeScreen extends React.Component {
                     programme={programme.name}
                     books={booksByProgramme[programmeId]}
                   />
+                  <Spacing height={50} />
                 </View>
               );
             })}
 
-          <Text style={{ fontSize: 30 }}>By courses</Text>
-          <Spacing height={30} />
           {selectedTab === "courses" &&
             Object.keys(booksByCourse).map(courseId => {
               const course = courseById(courseId);
@@ -125,5 +130,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(HomeScreen);
-
-// export default HomeScreen;

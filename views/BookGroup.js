@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import Icon from "react-native-vector-icons/AntDesign";
 import Spacing from "../components/Spacing";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { carouselWidth, itemWidth } from "../components/CarouselStyle";
 import SliderItem from "./SliderItem";
+import { colors, utilities } from "../global-styles";
 
 const styles = StyleSheet.create({
   group: {
@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1
   },
   carousel: {
-    margin: 20,
     backgroundColor: "#fff",
     flex: 1,
     alignContent: "center"
@@ -61,22 +60,20 @@ class BookGroup extends React.Component {
     const { programme, course } = this.props;
     const { activeDot, group, carousel, item } = styles;
     const { activeDotIndex } = this.state;
-    return (
-      <View style={styles.container}>
-        <View style={{ marginLeft: 10 }}>
-          <Text style={{ color: "#707392" }}>
-            {programme ? "Programme" : "Course"}
-          </Text>
-          <Spacing height={10} />
-          <Text style={group}>
-            <Text style={{ color: "#000" }}>
-              {programme ? programme : course}
-            </Text>
-            <Icon name="arrowright" size={24} light />
-          </Text>
-        </View>
-        <Spacing height={20} />
+    const { textExtraLarge } = utilities;
 
+    return (
+      <>
+        <Text style={{ color: "#707392" }}>
+          {programme ? "Programme" : "Course"}
+        </Text>
+        <Spacing height={10} />
+        <Text style={group}>
+          <Text style={[textExtraLarge, { color: colors.black }]}>
+            {programme ? programme : course}
+          </Text>
+        </Text>
+        <Spacing height={25} />
         <Carousel
           ref={c => {
             this._carousel = c;
@@ -85,9 +82,8 @@ class BookGroup extends React.Component {
           renderItem={this._renderItem}
           sliderWidth={carouselWidth}
           itemWidth={itemWidth}
-          inactiveSlideScale={0.7}
-          // inactiveSlideOpacity={0.}
-          // activeSlideAlignment="start"
+          inactiveSlideScale={1}
+          removeClippedSubviews={false}
           containerCustomStyle={carousel}
           contentContainerCustomStyle={item}
           onSnapToItem={index =>
@@ -96,7 +92,6 @@ class BookGroup extends React.Component {
             }))
           }
         />
-
         <Pagination
           dotsLength={this.booksInPairs.length}
           activeDotIndex={activeDotIndex}
@@ -106,7 +101,7 @@ class BookGroup extends React.Component {
           carouselRef={this._carousel}
           tappableDots={!!this._carousel}
         />
-      </View>
+      </>
     );
   }
 }
