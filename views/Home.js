@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Text, View, Button, SafeAreaView } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { utilities } from "../global-styles";
 import {
-  fetchBook,
   fetchBooks,
   fetchCourses,
   fetchProgrammes,
@@ -21,7 +21,16 @@ import BookGroup from "./BookGroup";
 class HomeScreen extends React.Component {
   static navigationOptions = () => {
     return {
-      headerLeft: <Logo kthLogo styles={{ marginLeft: 20, width: 240 }} />
+      headerLeft: <Logo kthLogo styles={{ marginLeft: 20, width: 240 }} />,
+      headerRight: (
+        <Icon
+          name="search"
+          size={30}
+          style={{ paddingRight: 20 }}
+          light
+          onPress={() => {}}
+        />
+      )
     };
   };
 
@@ -29,7 +38,8 @@ class HomeScreen extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: false
+      isLoading: false,
+      selectedTab: "programmes"
     };
   }
 
@@ -46,14 +56,12 @@ class HomeScreen extends React.Component {
   render() {
     const { container } = utilities;
     const {
-      fetchBook,
-      navigation,
       booksByCourse,
       courseById,
       booksByProgramme,
       programmeById
     } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, selectedTab } = this.state;
 
     if (isLoading) {
       return <LoadingScreen />;
@@ -65,31 +73,34 @@ class HomeScreen extends React.Component {
           <Spacing />
           <Text style={{ fontSize: 30 }}>By programmes</Text>
           <Spacing height={30} />
-          {Object.keys(booksByProgramme).map(programmeId => {
-            const programme = programmeById(programmeId);
-            return (
-              <View key={programmeId}>
-                <BookGroup
-                  programme={programme.name}
-                  books={booksByProgramme[programmeId]}
-                />
-              </View>
-            );
-          })}
+
+          {selectedTab === "programmes" &&
+            Object.keys(booksByProgramme).map(programmeId => {
+              const programme = programmeById(programmeId);
+              return (
+                <View key={programmeId}>
+                  <BookGroup
+                    programme={programme.name}
+                    books={booksByProgramme[programmeId]}
+                  />
+                </View>
+              );
+            })}
 
           <Text style={{ fontSize: 30 }}>By courses</Text>
           <Spacing height={30} />
-          {Object.keys(booksByCourse).map(courseId => {
-            const course = courseById(courseId);
-            return (
-              <View key={courseId}>
-                <BookGroup
-                  course={course.name}
-                  books={booksByCourse[courseId]}
-                />
-              </View>
-            );
-          })}
+          {selectedTab === "courses" &&
+            Object.keys(booksByCourse).map(courseId => {
+              const course = courseById(courseId);
+              return (
+                <View key={courseId}>
+                  <BookGroup
+                    course={course.name}
+                    books={booksByCourse[courseId]}
+                  />
+                </View>
+              );
+            })}
         </SafeAreaView>
       </ScrollView>
     );
@@ -105,7 +116,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchBook: id => dispatch(fetchBook(id)),
   fetchBooks: _ => dispatch(fetchBooks()),
   fetchCourses: _ => dispatch(fetchCourses()),
   fetchProgrammes: _ => dispatch(fetchProgrammes())
@@ -115,3 +125,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(HomeScreen);
+
+// export default HomeScreen;

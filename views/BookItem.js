@@ -1,6 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
 import { StyleSheet, Text, Image, View } from "react-native";
-import Spacing from "../components/Spacing";
+import { fetchBook } from "../store";
+import { withNavigation } from "react-navigation";
 
 const styles = StyleSheet.create({
   image: {
@@ -21,23 +23,36 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   container: {
-    textAlign: "left"
+    textAlign: "left",
+    backgroundColor: "#fff"
   }
 });
 
 class BookItem extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
-    const { id, coverPhoto, price, title } = this.props.book;
+    const { book, fetchBook, navigation } = this.props;
+    const { id, coverPhoto, price, title } = book;
     const { image, priceStyle, titleStyle, container } = styles;
     return (
       <>
-        {this.props.book ? (
+        {book ? (
           <View style={container} key={id}>
             <Image style={image} source={{ uri: coverPhoto }} />
             <Text>
               <Text style={priceStyle}>{price} SEK</Text>
               <Text>{"\n"}</Text>
-              <Text style={titleStyle}>{title}</Text>{" "}
+              <Text
+                style={titleStyle}
+                onPress={() => {
+                  navigation.navigate("BookInfo");
+                  fetchBook(book.id);
+                }}
+              >
+                {title}
+              </Text>
             </Text>
           </View>
         ) : null}
@@ -46,4 +61,15 @@ class BookItem extends React.Component {
   }
 }
 
-export default BookItem;
+const mapDispatchToProps = dispatch => ({
+  fetchBook: id => dispatch(fetchBook(id))
+});
+
+export default withNavigation(
+  connect(
+    null,
+    mapDispatchToProps
+  )(BookItem)
+);
+
+//export default withNavigation(BookItem);

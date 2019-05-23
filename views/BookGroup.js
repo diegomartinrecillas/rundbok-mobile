@@ -3,26 +3,25 @@ import { StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import Spacing from "../components/Spacing";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { sliderWidth, itemWidth } from "../components/CarouselStyle";
-import { BookItem } from "./BookItem";
+import { carouselWidth, itemWidth } from "../components/CarouselStyle";
 import SliderItem from "./SliderItem";
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    marginBottom: 20
-  },
-  tag: {
+  group: {
     fontSize: 20,
     fontWeight: "bold",
     textTransform: "uppercase",
     letterSpacing: 1
   },
-  pagination: {
-    alignItems: "center",
-    justifyContent: "center",
+  carousel: {
+    margin: 20,
+    backgroundColor: "#fff",
     flex: 1,
-    flexDirection: "row"
+    alignContent: "center"
+  },
+  item: {
+    backgroundColor: "#fff",
+    flex: 1
   },
   activeDot: {
     width: 8,
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
 class BookGroup extends React.Component {
   constructor(props) {
     super(props);
-    this.books = this.groupBooksinPairs();
+    this.booksInPairs = this.groupBooksinPairs();
     this.state = {
       activeDotIndex: 0
     };
@@ -54,11 +53,13 @@ class BookGroup extends React.Component {
     return booksInPairs;
   }
   _renderItem({ item, index }) {
-    return <SliderItem firstItem={item} secondItem={item} />;
+    return (
+      <SliderItem firstItem={item.firstItem} secondItem={item.secondItem} />
+    );
   }
   render() {
-    const { programme, course, books } = this.props;
-    const { activeDot, tag } = styles;
+    const { programme, course } = this.props;
+    const { activeDot, group, carousel, item } = styles;
     const { activeDotIndex } = this.state;
     return (
       <View style={styles.container}>
@@ -67,7 +68,7 @@ class BookGroup extends React.Component {
             {programme ? "Programme" : "Course"}
           </Text>
           <Spacing height={10} />
-          <Text style={tag}>
+          <Text style={group}>
             <Text style={{ color: "#000" }}>
               {programme ? programme : course}
             </Text>
@@ -80,11 +81,15 @@ class BookGroup extends React.Component {
           ref={c => {
             this._carousel = c;
           }}
-          data={books}
+          data={this.booksInPairs}
           renderItem={this._renderItem}
-          sliderWidth={sliderWidth}
-          itemWidth={itemWidth / 2}
-          activeSlideOffset={10}
+          sliderWidth={carouselWidth}
+          itemWidth={itemWidth}
+          inactiveSlideScale={0.7}
+          // inactiveSlideOpacity={0.}
+          // activeSlideAlignment="start"
+          containerCustomStyle={carousel}
+          contentContainerCustomStyle={item}
           onSnapToItem={index =>
             this.setState(previousState => ({
               activeDotIndex: index
@@ -93,7 +98,7 @@ class BookGroup extends React.Component {
         />
 
         <Pagination
-          dotsLength={books.length}
+          dotsLength={this.booksInPairs.length}
           activeDotIndex={activeDotIndex}
           dotStyle={activeDot}
           inactiveDotOpacity={0.2}

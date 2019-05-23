@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { Dimensions } from "react-native";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -7,5 +7,6 @@ const wp = percentage => {
   return Math.round(value);
 };
 
-export const sliderWidth = viewportWidth;
-export const itemWidth = wp(75) + wp(2) * 2;
+export const carouselWidth = viewportWidth;
+export const sliderWidth = wp(40);
+export const itemWidth = wp(100);
