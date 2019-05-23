@@ -86,8 +86,6 @@ class BookGroup extends React.Component {
           sliderWidth={carouselWidth}
           itemWidth={itemWidth}
           inactiveSlideScale={0.7}
-          // inactiveSlideOpacity={0.}
-          // activeSlideAlignment="start"
           containerCustomStyle={carousel}
           contentContainerCustomStyle={item}
           onSnapToItem={index =>

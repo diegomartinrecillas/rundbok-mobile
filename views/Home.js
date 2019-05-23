@@ -78,32 +78,65 @@ class HomeScreen extends React.Component {
               alignContent: "flex-start"
             }}
           >
-            <Button
-              onPress={() => {
-                const { selectedTab } = this.state;
-                if (selectedTab != "programmes") {
-                  this.setState({
-                    selectedTab: "programmes"
-                  });
-                }
-              }}
-              title="Programmes"
-              accessibilityLabel="Sort by programmes"
-              color={selectedTab === "programmes" ? "#000" : "#8a8a8a"}
-            />
-            <Button
-              onPress={() => {
-                const { selectedTab } = this.state;
-                if (selectedTab != "courses") {
-                  this.setState({
-                    selectedTab: "courses"
-                  });
-                }
-              }}
-              title="Courses"
-              accessibilityLabel="Sort by courses"
-              color={selectedTab === "courses" ? "#000" : "#8a8a8a"}
-            />
+            <View
+              style={
+                selectedTab === "programmes"
+                  ? {
+                      padding: 5,
+                      borderRadius: 5,
+                      backgroundColor: "#f5f5f5"
+                    }
+                  : {
+                      padding: 5,
+                      borderRadius: 5,
+                      backgroundColor: "#fff"
+                    }
+              }
+            >
+              <Button
+                onPress={() => {
+                  const { selectedTab } = this.state;
+                  if (selectedTab != "programmes") {
+                    this.setState({
+                      selectedTab: "programmes"
+                    });
+                  }
+                }}
+                title="Programmes"
+                accessibilityLabel="Sort by programmes"
+                color="#000"
+              />
+            </View>
+
+            <View
+              style={
+                selectedTab === "courses"
+                  ? {
+                      padding: 5,
+                      borderRadius: 5,
+                      backgroundColor: "#f5f5f5"
+                    }
+                  : {
+                      padding: 5,
+                      borderRadius: 5,
+                      backgroundColor: "#fff"
+                    }
+              }
+            >
+              <Button
+                onPress={() => {
+                  const { selectedTab } = this.state;
+                  if (selectedTab != "courses") {
+                    this.setState({
+                      selectedTab: "courses"
+                    });
+                  }
+                }}
+                title="Courses"
+                accessibilityLabel="Sort by courses"
+                color="#000"
+              />
+            </View>
           </View>
 
           <Spacing height={30} />
