@@ -78,25 +78,15 @@ class HomeScreen extends React.Component {
           })}
 
           <Text style={{ fontSize: 30 }}>By courses</Text>
+          <Spacing height={30} />
           {Object.keys(booksByCourse).map(courseId => {
             const course = courseById(courseId);
             return (
               <View key={courseId}>
-                <Text style={{ fontWeight: "bold" }}>
-                  {course && course.name}
-                </Text>
-                {booksByCourse[courseId].map(book => (
-                  <Text
-                    style={{ padding: 10 }}
-                    key={book.id}
-                    onPress={() => {
-                      navigation.navigate("BookInfo");
-                      fetchBook(book.id);
-                    }}
-                  >
-                    {book.title}
-                  </Text>
-                ))}
+                <BookGroup
+                  course={course.name}
+                  books={booksByCourse[courseId]}
+                />
               </View>
             );
           })}

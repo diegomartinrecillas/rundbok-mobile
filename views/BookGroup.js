@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     marginBottom: 20
   },
-  programme: {
+  tag: {
     fontSize: 20,
     fontWeight: "bold",
     textTransform: "uppercase",
@@ -57,16 +57,20 @@ class BookGroup extends React.Component {
     return <SliderItem firstItem={item} secondItem={item} />;
   }
   render() {
-    const { programme, books } = this.props;
-    const { activeDot } = styles;
+    const { programme, course, books } = this.props;
+    const { activeDot, tag } = styles;
     const { activeDotIndex } = this.state;
     return (
       <View style={styles.container}>
         <View style={{ marginLeft: 10 }}>
-          <Text style={{ color: "#707392" }}>Programme</Text>
+          <Text style={{ color: "#707392" }}>
+            {programme ? "Programme" : "Course"}
+          </Text>
           <Spacing height={10} />
-          <Text style={styles.programme}>
-            {programme}
+          <Text style={tag}>
+            <Text style={{ color: "#000" }}>
+              {programme ? programme : course}
+            </Text>
             <Icon name="arrowright" size={24} light />
           </Text>
         </View>
@@ -101,5 +105,10 @@ class BookGroup extends React.Component {
     );
   }
 }
+
+BookGroup.defaultProps = {
+  programme: "",
+  course: ""
+};
 
 export default BookGroup;
