@@ -9,6 +9,7 @@ import { searchBooks } from "../store";
 import BookItem from "./BookItem";
 import LoadingScreen from "../components/LoadingScreen";
 import { connect } from "react-redux";
+import { RequestStatus } from "../api";
 
 const styles = StyleSheet.create({
   modal: {
@@ -39,8 +40,7 @@ class SearchModal extends React.Component {
     super(props);
     this.state = {
       showModal: props.showModal,
-      searchText: "",
-      isLoading: false
+      searchText: ""
     };
   }
 
@@ -61,9 +61,9 @@ class SearchModal extends React.Component {
   }
 
   render() {
-    const { navigation, searchBooks } = this.props;
+    const { navigation, searchBooks, results, status } = this.props;
     const { modal, searchBar, textInput } = styles;
-    const { showModal, isLoading, searchText } = this.state;
+    const { showModal, searchText } = this.state;
     const { backgroundWhite, textExtraLarge, fontBold } = utilities;
     return (
       <View>
@@ -76,9 +76,7 @@ class SearchModal extends React.Component {
                 style={textInput}
                 placeholder="Search"
                 onChangeText={async text => {
-                  this.setState({ isLoading: true, searchText: text });
                   await searchBooks(text);
-                  this.setState({ isLoading: true });
                 }}
               />
               <Touchable
@@ -93,8 +91,11 @@ class SearchModal extends React.Component {
               RESULTS
             </Text>
             <Spacing height={30} />
-            {isLoading && <LoadingScreen />}
-            {/* <BookItem book={}></BookItem> */}
+            {status === RequestStatus.IDLE ||
+              (status === RequestStatus.LOADING && <LoadingScreen />)}
+            {results.map(book => (
+              <BookItem key={book.id} book={book} />
+            ))}
           </View>
         </Modal>
       </View>
@@ -102,13 +103,18 @@ class SearchModal extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  results: state.books.searchResults,
+  status: state.books.status
+});
+
 const mapDispatchToProps = dispatch => ({
-  searchBooks: _ => dispatch(searchBooks())
+  searchBooks: query => dispatch(searchBooks(query))
 });
 
 export default withNavigation(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(SearchModal)
 );
