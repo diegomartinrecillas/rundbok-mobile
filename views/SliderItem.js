@@ -32,7 +32,8 @@ class SliderItem extends React.Component {
     return (
       <>
         <BookItem book={firstItem} />
-        {/* <BookItem book={secondItem} /> */}
+        {/* {this.props.book ? <BookItem book={secondItem} /> : null} */}
+
         {/* {this.props.book ? (
           <View style={container} key={id}>
             <Image style={image} source={{ uri: coverPhoto }} />

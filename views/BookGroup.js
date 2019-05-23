@@ -50,20 +50,14 @@ class BookGroup extends React.Component {
         secondItem: books[i + 1] ? books[i + 1] : null
       });
     }
-    console.log(booksInPairs);
 
     return booksInPairs;
   }
   _renderItem({ item, index }) {
-    return (
-      // <View key={index} style={{ flex: 1, flexDirection: "row" }}>
-      //   <BookItem book={item.firstItem} />
-      // </View>
-      <SliderItem firstItem={item.firstItem} secondItem={item.secondItem} />
-    );
+    return <SliderItem firstItem={item} secondItem={item} />;
   }
   render() {
-    const { programme } = this.props;
+    const { programme, books } = this.props;
     const { activeDot } = styles;
     const { activeDotIndex } = this.state;
     return (
@@ -82,7 +76,7 @@ class BookGroup extends React.Component {
           ref={c => {
             this._carousel = c;
           }}
-          data={this.books}
+          data={books}
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth / 2}
@@ -95,7 +89,7 @@ class BookGroup extends React.Component {
         />
 
         <Pagination
-          dotsLength={this.books.length}
+          dotsLength={books.length}
           activeDotIndex={activeDotIndex}
           dotStyle={activeDot}
           inactiveDotOpacity={0.2}
