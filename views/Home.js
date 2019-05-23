@@ -71,8 +71,44 @@ class HomeScreen extends React.Component {
       <ScrollView contentContainerStyle={container}>
         <SafeAreaView>
           <Spacing />
-          <Text style={{ fontSize: 30 }}>By programmes</Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              alignContent: "flex-start"
+            }}
+          >
+            <Button
+              onPress={() => {
+                const { selectedTab } = this.state;
+                if (selectedTab != "programmes") {
+                  this.setState({
+                    selectedTab: "programmes"
+                  });
+                }
+              }}
+              title="Programmes"
+              accessibilityLabel="Sort by programmes"
+              color={selectedTab === "programmes" ? "#000" : "#8a8a8a"}
+            />
+            <Button
+              onPress={() => {
+                const { selectedTab } = this.state;
+                if (selectedTab != "courses") {
+                  this.setState({
+                    selectedTab: "courses"
+                  });
+                }
+              }}
+              title="Courses"
+              accessibilityLabel="Sort by courses"
+              color={selectedTab === "courses" ? "#000" : "#8a8a8a"}
+            />
+          </View>
+
           <Spacing height={30} />
+          <Text style={{ fontSize: 24, marginLeft: 10 }}>By {selectedTab}</Text>
+          <Spacing height={20} />
 
           {selectedTab === "programmes" &&
             Object.keys(booksByProgramme).map(programmeId => {
@@ -87,8 +123,6 @@ class HomeScreen extends React.Component {
               );
             })}
 
-          <Text style={{ fontSize: 30 }}>By courses</Text>
-          <Spacing height={30} />
           {selectedTab === "courses" &&
             Object.keys(booksByCourse).map(courseId => {
               const course = courseById(courseId);
