@@ -30,6 +30,7 @@ export const books = (state = initialState, action) => {
       return {
         ...state,
         data: books,
+        searchResults: books,
         status: RequestStatus.SUCCESS
       };
     }
@@ -41,9 +42,10 @@ export const books = (state = initialState, action) => {
       };
     }
     case SEARCH: {
+      const results = fuse.search(action.query);
       return {
         ...state,
-        searchResults: fuse.search(action.query)
+        searchResults: results.length > 0 ? results : state.data
       };
     }
     default:
