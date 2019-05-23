@@ -5,7 +5,10 @@ import Spacing from "../components/Spacing";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Touchable from "../components/Touchable";
 import { withNavigation } from "react-navigation";
+import { searchBooks } from "../store";
 import BookItem from "./BookItem";
+import LoadingScreen from "../components/LoadingScreen";
+import { connect } from "react-redux";
 
 const styles = StyleSheet.create({
   modal: {
@@ -36,7 +39,8 @@ class SearchModal extends React.Component {
     super(props);
     this.state = {
       showModal: props.showModal,
-      searchText: ""
+      searchText: "",
+      isLoading: false
     };
   }
 
@@ -57,9 +61,9 @@ class SearchModal extends React.Component {
   }
 
   render() {
-    const closeModal = this.props.navigation.getParam("searchModal", null);
+    const { navigation, searchBooks } = this.props;
     const { modal, searchBar, textInput } = styles;
-    const { showModal } = this.state;
+    const { showModal, isLoading, searchText } = this.state;
     const { backgroundWhite, textExtraLarge, fontBold } = utilities;
     return (
       <View>
@@ -71,23 +75,25 @@ class SearchModal extends React.Component {
               <TextInput
                 style={textInput}
                 placeholder="Search"
-                onChangeText={searchText => this.setState({ searchText })}
+                onChangeText={async text => {
+                  this.setState({ isLoading: true, searchText: text });
+                  await searchBooks(text);
+                  this.setState({ isLoading: true });
+                }}
               />
-              <Touchable onPress={closeModal} activeOpacity={0.7}>
+              <Touchable
+                onPress={navigation.getParam("searchModal", null)}
+                activeOpacity={0.7}
+              >
                 <Icon name="close" size={24} />
               </Touchable>
             </View>
             <Spacing height={30} />
-            <Text
-              style={[
-                textExtraLarge,
-                fontBold,
-                { color: colors.black, flex: 1 }
-              ]}
-            >
+            <Text style={[textExtraLarge, fontBold, { color: colors.black }]}>
               RESULTS
             </Text>
             <Spacing height={30} />
+            {isLoading && <LoadingScreen />}
             {/* <BookItem book={}></BookItem> */}
           </View>
         </Modal>
@@ -96,4 +102,13 @@ class SearchModal extends React.Component {
   }
 }
 
-export default withNavigation(SearchModal);
+const mapDispatchToProps = dispatch => ({
+  searchBooks: _ => dispatch(searchBooks())
+});
+
+export default withNavigation(
+  connect(
+    null,
+    mapDispatchToProps
+  )(SearchModal)
+);
