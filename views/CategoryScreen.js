@@ -19,6 +19,7 @@ class CategoryScreen extends React.Component {
     const { navigation } = this.props;
     const books = navigation.getParam("books");
     const name = navigation.getParam("title");
+    const isProgramme = navigation.getParam("isProgramme");
     const {
       container,
       dFlex,
@@ -26,11 +27,17 @@ class CategoryScreen extends React.Component {
       justifyContentCenter,
       fontBold,
       textBlack,
-      textLarge
+      textLarge,
+      textGray,
+      textExtraSmall
     } = utilities;
     return (
       <SafeAreaView style={container}>
         <Spacing />
+        <Text style={[textGray, textExtraSmall]}>
+          {isProgramme ? "Programme" : "Course"}
+        </Text>
+        <Spacing height={10} />
         <Text
           style={[
             fontBold,

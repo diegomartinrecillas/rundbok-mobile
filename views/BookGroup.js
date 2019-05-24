@@ -59,11 +59,17 @@ class BookGroup extends React.Component {
     const { programme, course, books, navigation } = this.props;
     const { activeDot, carousel } = styles;
     const { activeDotIndex } = this.state;
-    const { textExtraLarge, backgroundWhite, fontBold } = utilities;
+    const {
+      textExtraLarge,
+      backgroundWhite,
+      fontBold,
+      textGray,
+      textExtraSmall
+    } = utilities;
 
     return (
       <>
-        <Text style={{ color: "#707392" }}>
+        <Text style={[textGray, textExtraSmall]}>
           {programme ? "Programme" : "Course"}
         </Text>
         <Spacing height={10} />
@@ -72,8 +78,11 @@ class BookGroup extends React.Component {
           activeOpacity={0.7}
           onPress={() => {
             title = programme ? programme : course;
-            navigation.navigate("Category", { books, title });
-            //send books
+            navigation.navigate("Category", {
+              books,
+              title,
+              isProgramme: programme ? true : false
+            });
           }}
         >
           <Text
