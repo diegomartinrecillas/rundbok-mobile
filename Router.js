@@ -3,7 +3,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import { useScreens } from "react-native-screens";
 import Icon from "react-native-vector-icons/Feather";
 import BookInfoScreen from "./views/BookInfo.js";
-import FeedScreen from "./views/Feed.js";
+import CategoryScreen from "./views/CategoryScreen";
 import Home from "./views/Home.js";
 
 useScreens();
@@ -16,8 +16,8 @@ const RootStack = createStackNavigator(
     BookInfo: {
       screen: BookInfoScreen
     },
-    Feed: {
-      screen: FeedScreen
+    Category: {
+      screen: CategoryScreen
     }
   },
   {

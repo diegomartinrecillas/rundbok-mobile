@@ -1,25 +1,16 @@
 import React from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { View } from "react-native";
 import BookItem from "./BookItem";
 import { sliderWidth } from "../components/CarouselStyle";
-
-const styles = StyleSheet.create({
-  slider: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    width: sliderWidth
-  }
-});
+import { utilities } from "../global-styles";
 
 class SliderItem extends React.Component {
   render() {
     const { firstItem, secondItem } = this.props;
-    const { slider } = styles;
+    const { dFlex, backgroundWhite } = utilities;
     return (
-      <View style={slider}>
+      <View style={[dFlex, backgroundWhite]}>
         <BookItem book={firstItem} />
-        <View style={{ width: 30, backgroundColor: "#fff" }} />
         {secondItem ? <BookItem book={secondItem} /> : null}
       </View>
     );

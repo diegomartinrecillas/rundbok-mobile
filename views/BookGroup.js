@@ -1,32 +1,31 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { withNavigation } from "react-navigation";
 import Spacing from "../components/Spacing";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { carouselWidth, itemWidth } from "../components/CarouselStyle";
 import SliderItem from "./SliderItem";
+import Touchable from "../components/Touchable";
 import { colors, utilities } from "../global-styles";
+import {
+  fetchBooks,
+  fetchCourses,
+  fetchProgrammes,
+  selectBooksByCourse,
+  selectCourseById,
+  selectBooksByProgramme,
+  selectProgrammeById
+} from "../store";
 
 const styles = StyleSheet.create({
-  group: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    letterSpacing: 1
-  },
-  carousel: {
-    backgroundColor: "#fff",
-    flex: 1,
-    alignContent: "center"
-  },
-  item: {
-    backgroundColor: "#fff",
-    flex: 1
-  },
   activeDot: {
     width: 8,
     height: 8,
     borderRadius: 10,
     backgroundColor: "rgba(0, 0, 0, 0.8)"
+  },
+  carousel: {
+    marginBottom: 0
   }
 });
 
@@ -57,10 +56,10 @@ class BookGroup extends React.Component {
     );
   }
   render() {
-    const { programme, course } = this.props;
-    const { activeDot, group, carousel, item } = styles;
+    const { programme, course, books, navigation } = this.props;
+    const { activeDot, carousel } = styles;
     const { activeDotIndex } = this.state;
-    const { textExtraLarge } = utilities;
+    const { textExtraLarge, backgroundWhite, fontBold } = utilities;
 
     return (
       <>
@@ -68,11 +67,26 @@ class BookGroup extends React.Component {
           {programme ? "Programme" : "Course"}
         </Text>
         <Spacing height={10} />
-        <Text style={group}>
-          <Text style={[textExtraLarge, { color: colors.black }]}>
+
+        <Touchable
+          activeOpacity={0.7}
+          onPress={() => {
+            title = programme ? programme : course;
+            navigation.navigate("Category", { books, title });
+            //send books
+          }}
+        >
+          <Text
+            style={[
+              textExtraLarge,
+              fontBold,
+              { color: colors.black, textTransform: "uppercase" }
+            ]}
+          >
             {programme ? programme : course}
           </Text>
-        </Text>
+        </Touchable>
+
         <Spacing height={25} />
         <Carousel
           ref={c => {
@@ -81,11 +95,11 @@ class BookGroup extends React.Component {
           data={this.booksInPairs}
           renderItem={this._renderItem}
           sliderWidth={carouselWidth}
-          itemWidth={itemWidth}
+          itemWidth={itemWidth - 70}
           inactiveSlideScale={1}
           removeClippedSubviews={false}
+          contentContainerCustomStyle={backgroundWhite}
           containerCustomStyle={carousel}
-          contentContainerCustomStyle={item}
           onSnapToItem={index =>
             this.setState(previousState => ({
               activeDotIndex: index
@@ -111,4 +125,4 @@ BookGroup.defaultProps = {
   course: ""
 };
 
-export default BookGroup;
+export default withNavigation(BookGroup);
