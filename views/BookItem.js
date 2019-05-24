@@ -5,6 +5,7 @@ import { fetchBook } from "../store";
 import { withNavigation } from "react-navigation";
 import Spacing from "../components/Spacing";
 import Touchable from "../components/Touchable";
+import { utilities, colors } from "../global-styles";
 
 const styles = StyleSheet.create({
   image: {
@@ -13,16 +14,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     aspectRatio: 3 / 4
-  },
-  priceStyle: {
-    color: "#32ab00",
-    fontWeight: "bold",
-    fontSize: 20
-  },
-  titleStyle: {
-    fontWeight: "bold",
-    color: "#181828",
-    fontSize: 18
   },
   container: {
     textAlign: "left",
@@ -39,7 +30,8 @@ class BookItem extends React.Component {
   render() {
     const { book, fetchBook, navigation } = this.props;
     const { id, coverPhoto, price, title } = book;
-    const { image, priceStyle, titleStyle, container } = styles;
+    const { image, container } = styles;
+    const { textLarge, fontBold, textGreen, textBlack } = utilities;
     return (
       <>
         {book ? (
@@ -53,9 +45,9 @@ class BookItem extends React.Component {
             key={id}
           >
             <Image style={image} source={{ uri: coverPhoto }} />
-            <Text style={priceStyle}>{price} SEK</Text>
+            <Text style={[textLarge, fontBold, textGreen]}>{price} SEK</Text>
             <Spacing height={10} />
-            <Text style={titleStyle}>{title}</Text>
+            <Text style={[textLarge, fontBold, textBlack]}>{title}</Text>
           </Touchable>
         ) : null}
       </>

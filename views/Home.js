@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { Text, View, Button, SafeAreaView, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { utilities } from "../global-styles";
 import {
   fetchBooks,
   fetchCourses,
@@ -19,21 +18,21 @@ import Spacing from "../components/Spacing";
 import BookGroup from "./BookGroup";
 import SearchModal from "./SearchModal";
 import Touchable from "../components/Touchable";
+import { variables, colors, utilities } from "../global-styles";
 
 const styles = StyleSheet.create({
   activeBtn: {
     padding: 5,
-    borderRadius: 5,
-    backgroundColor: "#f5f5f5"
+    borderRadius: variables.radius,
+    backgroundColor: colors.gray
   },
   defaultBtn: {
     padding: 5,
-    borderRadius: 5,
-    backgroundColor: "#fff"
+    borderRadius: variables.radius,
+    backgroundColor: colors.white
   },
   btnPanel: {
     flex: 1,
-    flexDirection: "row",
     alignContent: "flex-start"
   }
 });
@@ -99,7 +98,7 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { container } = utilities;
+    const { container, dFlex } = utilities;
     const {
       booksByCourse,
       courseById,
@@ -117,7 +116,7 @@ class HomeScreen extends React.Component {
       <ScrollView contentContainerStyle={container}>
         <SafeAreaView>
           <Spacing />
-          <View style={btnPanel}>
+          <View style={[dFlex, btnPanel]}>
             <View style={selectedTab === "programmes" ? activeBtn : defaultBtn}>
               <Button
                 onPress={() => {
@@ -146,7 +145,7 @@ class HomeScreen extends React.Component {
                 }}
                 title="Courses"
                 accessibilityLabel="Sort by courses"
-                color="#000"
+                color={colors.black}
               />
             </View>
           </View>
@@ -174,6 +173,7 @@ class HomeScreen extends React.Component {
                     course={course.name}
                     books={booksByCourse[courseId]}
                   />
+                  <Spacing height={50} />
                 </View>
               );
             })}

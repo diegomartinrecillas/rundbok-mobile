@@ -46,7 +46,8 @@ class SearchModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: props.showModal
+      showModal: props.showModal,
+      searchQuery: ""
     };
   }
 
@@ -69,8 +70,9 @@ class SearchModal extends React.Component {
   render() {
     const { navigation, searchBooks, results, status } = this.props;
     const { modal, searchBar, textInput } = styles;
-    const { showModal } = this.state;
+    const { showModal, searchQuery } = this.state;
     const {
+      container,
       backgroundWhite,
       textExtraLarge,
       fontBold,
@@ -91,7 +93,9 @@ class SearchModal extends React.Component {
                   placeholder="Search"
                   onChangeText={async text => {
                     await searchBooks(text);
+                    this.setState({ searchQuery: text });
                   }}
+                  value={searchQuery}
                 />
                 <Touchable
                   onPress={navigation.getParam("searchModal", null)}

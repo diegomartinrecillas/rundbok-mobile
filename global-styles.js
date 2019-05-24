@@ -56,6 +56,10 @@ const utilities = StyleSheet.create({
     fontSize: 14
   },
 
+  textBlack: {
+    color: colors.black
+  },
+
   textGray: {
     color: colors.darkGray
   },
