@@ -16,7 +16,7 @@ const Touchable = props => {
 };
 
 Touchable.propTypes = {
-  style: PropTypes.object,
+  style: PropTypes.any,
   onPress: PropTypes.func,
   children: PropTypes.any.isRequired,
   activeOpacity: PropTypes.number

@@ -7,9 +7,16 @@ import { utilities } from "../global-styles";
 class SliderItem extends React.Component {
   render() {
     const { firstItem, secondItem } = this.props;
-    const { dFlex, backgroundWhite } = utilities;
+    const { dFlex, backgroundWhite, container } = utilities;
     return (
-      <View style={[dFlex, backgroundWhite]}>
+      <View
+        style={[
+          dFlex,
+          backgroundWhite,
+          container,
+          { justifyContent: "space-between" }
+        ]}
+      >
         <BookItem book={firstItem} />
         {secondItem ? <BookItem book={secondItem} /> : null}
       </View>

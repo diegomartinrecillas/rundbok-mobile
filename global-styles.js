@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const variables = {
   radius: 4
@@ -78,7 +78,11 @@ const utilities = StyleSheet.create({
   },
 
   fontBold: {
-    fontWeight: "bold"
+    fontWeight: "700"
+  },
+
+  fontMedium: {
+    fontWeight: "500"
   }
 });
 

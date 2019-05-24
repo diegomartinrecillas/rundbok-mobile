@@ -45,7 +45,7 @@ export const books = (state = initialState, action) => {
       const results = fuse.search(action.query);
       return {
         ...state,
-        searchResults: results.length > 0 ? results : state.data
+        searchResults: results.length > 0 || action.query ? results : state.data
       };
     }
     default:

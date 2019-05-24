@@ -133,7 +133,7 @@ class BookInfoScreen extends React.Component {
       <>
         <ScrollView contentContainerStyle={container}>
           <SafeAreaView>
-            <Spacing />
+            <Spacing height={15} />
             <Text style={textLightGray}>
               {programme.name} / {course.name}
             </Text>
@@ -173,7 +173,7 @@ class BookInfoScreen extends React.Component {
               <Spacing height={20} />
               <Text style={[textNormal, textGray]}>{personalDescription}</Text>
             </View>
-            <Spacing />
+            <Spacing height={30} />
           </SafeAreaView>
         </ScrollView>
         <Touchable

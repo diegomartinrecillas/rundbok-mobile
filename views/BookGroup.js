@@ -1,21 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { withNavigation } from "react-navigation";
 import Spacing from "../components/Spacing";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { carouselWidth, itemWidth } from "../components/CarouselStyle";
 import SliderItem from "./SliderItem";
 import Touchable from "../components/Touchable";
 import { colors, utilities } from "../global-styles";
-import {
-  fetchBooks,
-  fetchCourses,
-  fetchProgrammes,
-  selectBooksByCourse,
-  selectCourseById,
-  selectBooksByProgramme,
-  selectProgrammeById
-} from "../store";
+import Icon from "react-native-vector-icons/Feather";
 
 const styles = StyleSheet.create({
   activeDot: {
@@ -59,47 +50,51 @@ class BookGroup extends React.Component {
     const { programme, course, books, navigation } = this.props;
     const { activeDot, carousel } = styles;
     const { activeDotIndex } = this.state;
-    const { textExtraLarge, backgroundWhite, fontBold } = utilities;
+    const { textLarge, backgroundWhite, fontBold, container } = utilities;
 
     return (
       <>
-        <Text style={{ color: "#707392" }}>
-          {programme ? "Programme" : "Course"}
-        </Text>
-        <Spacing height={10} />
-
-        <Touchable
-          activeOpacity={0.7}
-          onPress={() => {
-            title = programme ? programme : course;
-            navigation.navigate("Category", { books, title });
-            //send books
-          }}
-        >
-          <Text
-            style={[
-              textExtraLarge,
-              fontBold,
-              { color: colors.black, textTransform: "uppercase" }
-            ]}
-          >
-            {programme ? programme : course}
+        <View style={container}>
+          <Text style={{ color: "#707392" }}>
+            {programme ? "Programme" : "Course"}
           </Text>
-        </Touchable>
+          <Spacing height={10} />
+          <Touchable
+            activeOpacity={0.7}
+            onPress={() => {
+              title = programme ? programme : course;
+              navigation.navigate("Category", { books, title });
+              //send books
+            }}
+          >
+            <Text
+              style={[
+                textLarge,
+                fontBold,
+                { color: colors.black, textTransform: "uppercase" }
+              ]}
+            >
+              {programme ? programme : course}{" "}
+              <Icon size={18} name="arrow-right" />
+            </Text>
+          </Touchable>
+        </View>
 
-        <Spacing height={25} />
+        <Spacing />
         <Carousel
           ref={c => {
             this._carousel = c;
           }}
           data={this.booksInPairs}
           renderItem={this._renderItem}
-          sliderWidth={carouselWidth}
-          itemWidth={itemWidth - 70}
+          sliderWidth={Dimensions.get("window").width}
+          itemWidth={Dimensions.get("window").width}
           inactiveSlideScale={1}
           removeClippedSubviews={false}
           contentContainerCustomStyle={backgroundWhite}
           containerCustomStyle={carousel}
+          useScrollView
+          enableSnap
           onSnapToItem={index =>
             this.setState(previousState => ({
               activeDotIndex: index

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Text, View, Button, SafeAreaView, StyleSheet } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { View, Text, SafeAreaView, StyleSheet } from "react-native";
+import Icon from "react-native-vector-icons/Feather";
 import {
   fetchBooks,
   fetchCourses,
@@ -21,15 +21,17 @@ import Touchable from "../components/Touchable";
 import { variables, colors, utilities } from "../global-styles";
 
 const styles = StyleSheet.create({
-  activeBtn: {
-    padding: 5,
+  tabActive: {
+    padding: 12,
     borderRadius: variables.radius,
-    backgroundColor: colors.gray
+    backgroundColor: colors.black,
+    borderRadius: 5
   },
-  defaultBtn: {
-    padding: 5,
+  tab: {
+    padding: 12,
     borderRadius: variables.radius,
-    backgroundColor: colors.white
+    backgroundColor: colors.gray,
+    borderRadius: 5
   },
   btnPanel: {
     flex: 1,
@@ -98,7 +100,7 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { container, dFlex } = utilities;
+    const { container, dFlex, textNormal, fontBold } = utilities;
     const {
       booksByCourse,
       courseById,
@@ -106,48 +108,53 @@ class HomeScreen extends React.Component {
       programmeById
     } = this.props;
     const { isLoading, selectedTab, showModal } = this.state;
-    const { activeBtn, defaultBtn, btnPanel } = styles;
+    const { tab, tabActive } = styles;
 
     if (isLoading) {
       return <LoadingScreen />;
     }
 
     return (
-      <ScrollView contentContainerStyle={container}>
+      <ScrollView>
         <SafeAreaView>
           <Spacing />
-          <View style={[dFlex, btnPanel]}>
-            <View style={selectedTab === "programmes" ? activeBtn : defaultBtn}>
-              <Button
-                onPress={() => {
-                  const { selectedTab } = this.state;
-                  if (selectedTab != "programmes") {
-                    this.setState({
-                      selectedTab: "programmes"
-                    });
-                  }
-                }}
-                title="Programmes"
-                accessibilityLabel="Sort by programmes"
-                color="#000"
-              />
-            </View>
-
-            <View style={selectedTab === "courses" ? activeBtn : defaultBtn}>
-              <Button
-                onPress={() => {
-                  const { selectedTab } = this.state;
-                  if (selectedTab != "courses") {
-                    this.setState({
-                      selectedTab: "courses"
-                    });
-                  }
-                }}
-                title="Courses"
-                accessibilityLabel="Sort by courses"
-                color={colors.black}
-              />
-            </View>
+          <View style={[dFlex, container]}>
+            <Touchable
+              onPress={() => this.setState({ selectedTab: "programmes" })}
+              activeOpacity={0.7}
+              style={[
+                tab,
+                { marginRight: 10 },
+                selectedTab === "programmes" && tabActive
+              ]}
+            >
+              <Text
+                style={[
+                  textNormal,
+                  fontBold,
+                  selectedTab === "programmes" && { color: colors.white },
+                  selectedTab !== "programmes" && { opacity: 0.9 }
+                ]}
+              >
+                Programmes
+              </Text>
+            </Touchable>
+            <Touchable
+              onPress={() => this.setState({ selectedTab: "courses" })}
+              activeOpacity={0.7}
+              style={[tab, selectedTab === "courses" && tabActive]}
+            >
+              <Text
+                style={[
+                  textNormal,
+                  fontBold,
+                  selectedTab === "courses" && { color: colors.white },
+                  selectedTab !== "courses" && { opacity: 0.9 }
+                ]}
+              >
+                Courses
+              </Text>
+            </Touchable>
           </View>
           <Spacing />
           {selectedTab === "programmes" &&
@@ -156,10 +163,11 @@ class HomeScreen extends React.Component {
               return (
                 <View key={programmeId}>
                   <BookGroup
+                    key={programmeId}
                     programme={programme.name}
                     books={booksByProgramme[programmeId]}
                   />
-                  <Spacing height={50} />
+                  <Spacing height={40} />
                 </View>
               );
             })}
@@ -173,7 +181,7 @@ class HomeScreen extends React.Component {
                     course={course.name}
                     books={booksByCourse[courseId]}
                   />
-                  <Spacing height={50} />
+                  <Spacing height={40} />
                 </View>
               );
             })}

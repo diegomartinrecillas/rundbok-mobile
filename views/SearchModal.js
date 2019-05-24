@@ -7,9 +7,9 @@ import {
   TextInput,
   SafeAreaView
 } from "react-native";
-import { colors, utilities } from "../global-styles";
+import { colors, utilities, variables } from "../global-styles";
 import Spacing from "../components/Spacing";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Feather";
 import Touchable from "../components/Touchable";
 import { withNavigation } from "react-navigation";
 import { searchBooks } from "../store";
@@ -18,11 +18,9 @@ import LoadingScreen from "../components/LoadingScreen";
 import { connect } from "react-redux";
 import { RequestStatus } from "../api";
 import { ScrollView } from "react-native-gesture-handler";
+import { fetchBook } from "../store";
 
 const styles = StyleSheet.create({
-  modal: {
-    margin: 20
-  },
   searchBar: {
     flexDirection: "row",
     padding: 10,
@@ -53,7 +51,6 @@ class SearchModal extends React.Component {
 
   updateNavigationParams() {
     const { navigation } = this.props;
-    const { showModal } = this.state;
 
     navigation.setParams({
       searchModal: () => this.toggleModal()
@@ -67,71 +64,97 @@ class SearchModal extends React.Component {
     this.updateNavigationParams();
   }
 
+  handleBookClick(bookId) {
+    const { navigation, fetchBook } = this.props;
+    this.toggleModal();
+    navigation.navigate("BookInfo");
+    fetchBook(bookId);
+  }
+
   render() {
     const { navigation, searchBooks, results, status } = this.props;
-    const { modal, searchBar, textInput } = styles;
     const { showModal, searchQuery } = this.state;
-    const {
-      container,
-      backgroundWhite,
-      textExtraLarge,
-      fontBold,
-      dFlex,
-      alignItemsCenter,
-      justifyContentCenter
-    } = utilities;
+    const { radius } = variables;
+    const { textExtraLarge, fontBold, dFlex, container, textLarge } = utilities;
     return (
-      <View>
-        <Modal animationType="slide" transparent={false} visible={showModal}>
-          <SafeAreaView style={[modal, backgroundWhite]}>
-            <View>
-              <Spacing height={30} />
-              <View style={searchBar}>
-                <Icon name="search" size={24} />
-                <TextInput
-                  style={textInput}
-                  placeholder="Search"
-                  onChangeText={async text => {
-                    await searchBooks(text);
-                    this.setState({ searchQuery: text });
-                  }}
-                  value={searchQuery}
-                />
+      <Modal
+        animationType="slide"
+        style={{ flex: 1 }}
+        transparent={false}
+        visible={showModal}
+      >
+        <View style={container}>
+          <Spacing height={60} />
+          <View style={{ width: "100%", height: 45 }}>
+            <Icon
+              style={{ position: "absolute", left: 15, top: 10, zIndex: 10 }}
+              name="search"
+              size={24}
+            />
+            <TextInput
+              style={[
+                {
+                  width: "100%",
+                  height: 45,
+                  backgroundColor: "#f5f5f5",
+                  borderRadius: radius,
+                  paddingLeft: 50,
+                  paddingTop: 2
+                },
+                textLarge
+              ]}
+              placeholder="Search"
+              onChangeText={async text => {
+                await searchBooks(text);
+                this.setState({ searchQuery: text });
+              }}
+              value={searchQuery}
+            />
+            <Touchable
+              style={{ position: "absolute", right: 15, top: 10 }}
+              onPress={navigation.getParam("searchModal", null)}
+              activeOpacity={0.7}
+            >
+              <Icon name="x" size={24} />
+            </Touchable>
+          </View>
+          <Spacing height={10} />
+        </View>
+        {status === RequestStatus.IDLE ||
+          (status === RequestStatus.LOADING && <LoadingScreen />)}
+        <ScrollView contentContainerStyle={container}>
+          <SafeAreaView>
+            <Spacing height={30} />
+            <Text style={[textExtraLarge, fontBold, { color: colors.black }]}>
+              RESULTS
+            </Text>
+            <Spacing height={20} />
+            {!results.length && (
+              <Text style={textLarge}>No books matched your search</Text>
+            )}
+            <View
+              style={[
+                dFlex,
+                { flexWrap: "wrap", justifyContent: "space-between" }
+              ]}
+            >
+              {results.map(book => (
                 <Touchable
-                  onPress={navigation.getParam("searchModal", null)}
-                  activeOpacity={0.7}
+                  onPress={() => this.handleBookClick(book.id)}
+                  activeOpacity={0.5}
+                  key={book.id}
                 >
-                  <Icon name="close" size={24} />
+                  <BookItem
+                    noOnPress
+                    styles={{ marginBottom: 40 }}
+                    book={book}
+                  />
                 </Touchable>
-              </View>
-              <Spacing height={30} />
-              <Text style={[textExtraLarge, fontBold, { color: colors.black }]}>
-                RESULTS
-              </Text>
-              <Spacing height={30} />
+              ))}
             </View>
-
-            {status === RequestStatus.IDLE ||
-              (status === RequestStatus.LOADING && <LoadingScreen />)}
-            <ScrollView>
-              <View
-                style={[
-                  dFlex,
-                  alignItemsCenter,
-                  justifyContentCenter,
-                  { flexWrap: "wrap" }
-                ]}
-              >
-                {results.map(book => (
-                  <View key={book.id} style={{ margin: 10 }}>
-                    <BookItem book={book} />
-                  </View>
-                ))}
-              </View>
-            </ScrollView>
           </SafeAreaView>
-        </Modal>
-      </View>
+        </ScrollView>
+      </Modal>
     );
   }
 }
@@ -142,7 +165,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  searchBooks: query => dispatch(searchBooks(query))
+  searchBooks: query => dispatch(searchBooks(query)),
+  fetchBook: id => dispatch(fetchBook(id))
 });
 
 export default withNavigation(

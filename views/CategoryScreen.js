@@ -19,47 +19,29 @@ class CategoryScreen extends React.Component {
     const { navigation } = this.props;
     const books = navigation.getParam("books");
     const name = navigation.getParam("title");
-    const {
-      container,
-      dFlex,
-      alignItemsCenter,
-      justifyContentCenter,
-      fontBold,
-      textBlack,
-      textLarge
-    } = utilities;
+    const { container, dFlex, fontBold, textBlack, textLarge } = utilities;
     return (
-      <SafeAreaView style={container}>
-        <Spacing />
-        <Text
-          style={[
-            fontBold,
-            textBlack,
-            textLarge,
-            { textTransform: "uppercase" }
-          ]}
-        >
-          {name}
-        </Text>
-        <Spacing />
-
-        <ScrollView>
+      <ScrollView contentContainerStyle={container}>
+        <SafeAreaView>
+          <Spacing height={20} />
+          <Text style={[textLarge, fontBold, textBlack]}>{name}</Text>
+          <Spacing />
           <View
             style={[
               dFlex,
-              alignItemsCenter,
-              justifyContentCenter,
-              { flexWrap: "wrap" }
+              { flexWrap: "wrap", justifyContent: "space-between" }
             ]}
           >
             {books.map(book => (
-              <View key={book.id} style={{ margin: 10 }}>
-                <BookItem book={book} />
-              </View>
+              <BookItem
+                key={book.id}
+                styles={{ marginBottom: 40 }}
+                book={book}
+              />
             ))}
           </View>
-        </ScrollView>
-      </SafeAreaView>
+        </SafeAreaView>
+      </ScrollView>
     );
   }
 }
