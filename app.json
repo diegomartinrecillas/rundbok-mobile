@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Rundbok",
-    "slug": "rundbok-mobile",
+    "slug": "rundbok",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -24,6 +24,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "RundBok is a service meant to help and allow students at KTH Royal Institute of Technology to list and sell their old course literature."
   }
 }
